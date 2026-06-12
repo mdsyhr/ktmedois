@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use App\Models\User;
+use App\Models\ExternalSupplier;
 
 class LoginRequest extends FormRequest
 {
@@ -21,7 +22,7 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'Username' => ['required', 'string'],
+            'Username'      => ['required', 'string'],
             'Password_Hash' => ['required', 'string'],
         ];
     }
@@ -30,8 +31,10 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
+        // Step 1 — Find user by username
         $user = User::where('Username', $this->input('Username'))->first();
 
+        // Step 2 — Check if user exists and password matches
         if (! $user || ! Hash::check($this->input('Password_Hash'), $user->Password_Hash)) {
             RateLimiter::hit($this->throttleKey());
 
@@ -40,6 +43,28 @@ class LoginRequest extends FormRequest
             ]);
         }
 
+        // Step 3 — If vendor, check external supplier status
+        if ($user->Role === 'vendor') {
+            $externalSupplier = ExternalSupplier::where('SUPPLIERID', $user->Username)->first();
+
+            if (! $externalSupplier) {
+                RateLimiter::hit($this->throttleKey());
+
+                throw ValidationException::withMessages([
+                    'Username' => 'Vendor not found in supplier system.',
+                ]);
+            }
+
+            if ($externalSupplier->SUPPLIER_CTC_STATUS !== 'active') {
+                RateLimiter::hit($this->throttleKey());
+
+                throw ValidationException::withMessages([
+                    'Username' => 'Your vendor account is inactive. Please contact KTMB administrator.',
+                ]);
+            }
+        }
+
+        // Step 4 — Log the user in
         Auth::login($user, $this->boolean('remember'));
 
         RateLimiter::clear($this->throttleKey());

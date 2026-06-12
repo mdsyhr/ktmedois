@@ -55,4 +55,16 @@ class User extends Authenticatable
     {
         return $this->attributes['Email'];
     }
+
+    // Disable remember token
+    public function getRememberTokenName()
+    {
+        return null;
+    }
+
+    // Override password reset to use Password_Hash column
+    public function setPasswordAttribute($value)
+    {
+        $this->attributes['Password_Hash'] = $value;
+    }
 }
