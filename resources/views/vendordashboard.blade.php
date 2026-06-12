@@ -247,7 +247,7 @@
         <a href="{{ route('vendor.dashboard') }}" class="active">
             🏠 Home
         </a>
-        <a href="#">
+        <a href="{{ route('delivery.list') }}">
             📋 Manage Delivery Order
         </a>
         <a href="#">
