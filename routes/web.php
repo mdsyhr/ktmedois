@@ -2,13 +2,22 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Models\Supplier;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
+// Vendor Dashboard
+Route::get('/vendor/dashboard', function () {
+    $supplier = Supplier::where('User_ID', auth()->user()->User_ID)->first();
+    return view('vendordashboard', compact('supplier'));
+})->middleware(['auth'])->name('vendor.dashboard');
+
+// Default dashboard
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    $supplier = Supplier::where('User_ID', auth()->user()->User_ID)->first();
+    return view('vendordashboard', compact('supplier'));
 })->middleware(['auth'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
