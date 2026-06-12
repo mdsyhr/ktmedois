@@ -417,7 +417,7 @@
                     </div>
 
                     <div class="btn-group">
-                        <a href="{{ route('dashboard') }}" class="btn btn-cancel">Cancel</a>
+                        <a href="{{ route('delivery.list') }}" class="btn btn-cancel">Cancel</a>
                         <button type="submit" class="btn btn-success">Submit Delivery Order</button>
                     </div>
                 </form>

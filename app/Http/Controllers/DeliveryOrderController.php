@@ -158,7 +158,7 @@ class DeliveryOrderController extends Controller
         DeliveryOrder::create([
             'Supplier_ID' => $supplierId,
             'Cust_ID'     => $validated['Cust_ID'],
-            'DO_Number' => 'DO-' . \Illuminate\Support\Str::uuid(), // Generate a unique DO number
+            'DO_Number' => 'DO-' . now()->format('ymdHis'), // Generate a unique DO number
             'PO_Number'   => $validated['PO_Number'],
             'DO_Link'      => $doFileContent,
             'Proof_Link'     => $poFileContent,
