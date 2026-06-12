@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\DeliveryOrderController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Supplier;
 
@@ -32,6 +33,13 @@ Route::get('/invoice/create/{doId}', [InvoiceController::class, 'create']);
 Route::post('/invoice/store', [InvoiceController::class, 'store']);
 Route::post('/audit/log', [InvoiceController::class, 'clientAuditLog']);
 Route::get('/invoice/do-items/{doId}', [InvoiceController::class, 'getDoItems']);
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
+
+// Delivery Order Routes
+Route::get('/delivery/create', [DeliveryOrderController::class, 'create'])->name('delivery.create');
+Route::post('/delivery/insert', [DeliveryOrderController::class, 'insert'])->name('delivery.insert');
+Route::get('/delivery/list', [DeliveryOrderController::class, 'list'])->name('delivery.list');
+Route::get('/delivery/{id}', [DeliveryOrderController::class, 'show'])->name('delivery.show');
+Route::delete('/delivery/{id}/delete', [DeliveryOrderController::class, 'destroy'])->name('delivery.destroy');

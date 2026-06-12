@@ -248,7 +248,7 @@
             🏠 Home
         </a>
         <a href="#">
-            📋 Manage DO
+            📋 Manage Delivery Order
         </a>
         <a href="#">
             🧾 Manage Invoice
