@@ -3,13 +3,22 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\InvoiceController;
 use Illuminate\Support\Facades\Route;
+use App\Models\Supplier;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
+// Vendor Dashboard
+Route::get('/vendor/dashboard', function () {
+    $supplier = Supplier::where('User_ID', auth()->user()->User_ID)->first();
+    return view('vendordashboard', compact('supplier'));
+})->middleware(['auth'])->name('vendor.dashboard');
+
+// Default dashboard
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    $supplier = Supplier::where('User_ID', auth()->user()->User_ID)->first();
+    return view('vendordashboard', compact('supplier'));
 })->middleware(['auth'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
@@ -23,4 +32,6 @@ Route::get('/invoice/create/{doId}', [InvoiceController::class, 'create']);
 Route::post('/invoice/store', [InvoiceController::class, 'store']);
 Route::post('/audit/log', [InvoiceController::class, 'clientAuditLog']);
 Route::get('/invoice/do-items/{doId}', [InvoiceController::class, 'getDoItems']);
+require __DIR__.'/auth.php';
+
 require __DIR__.'/auth.php';

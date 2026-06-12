@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Hash;
 
 class User extends Authenticatable
 {
@@ -39,9 +38,21 @@ class User extends Authenticatable
         return $this->Password_Hash;
     }
 
-    // Tell Laravel the password field name for Auth::attempt
+    // Tell Laravel the password field name
     public function getAuthPasswordName()
     {
         return 'Password_Hash';
+    }
+
+    // Tell Laravel your email column for password reset
+    public function getEmailForPasswordReset()
+    {
+        return $this->attributes['Email'];
+    }
+
+    // Email attribute accessor
+    public function getEmailAttribute()
+    {
+        return $this->attributes['Email'];
     }
 }
