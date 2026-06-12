@@ -168,4 +168,51 @@ class DeliveryOrderController extends Controller
 
         return redirect()->route('dashboard')->with('success', 'Delivery Order submitted successfully!');
     }
+
+
+    public function showFile(string $id, string $type)
+    {
+        // 1. Fetch the record
+        $item = DB::table('delivery_order')->where('DO_ID', $id)->first();
+
+        if (!$item) {
+            abort(404, 'Delivery Order not found');
+        }
+
+        $content = null;
+        $filename = 'document';
+
+        // 2. Determine which BLOB column to fetch based on the URL parameter
+        if ($type === 'do') {
+            $content = $item->DO_Link;
+            $filename = 'DO_' . ($item->DO_Number ?? $item->DO_ID);
+        } elseif ($type === 'proof') {
+            $content = $item->Proof_Link;
+            $filename = 'Proof_' . ($item->DO_Number ?? $item->DO_ID);
+        } else {
+            abort(404, 'Invalid file type');
+        }
+
+        // 3. Check if the file actually exists in the database
+        if (!$content) {
+            abort(404, 'File content is empty or not found');
+        }
+
+        // 4. ⚠️ CONVERT RESOURCE TO STRING IF NEEDED
+        if (is_resource($content)) {
+            $content = stream_get_contents($content);
+            fclose($content); // Close the resource after reading
+        }
+
+        // 5. Detect the MIME type (e.g., application/pdf, image/jpeg) from the binary data
+        $finfo = new \finfo(FILEINFO_MIME_TYPE);
+        $mimeType = $finfo->buffer($content) ?: 'application/octet-stream';
+
+        // 6. Return the binary data as a response with proper headers
+        return response($content, 200, [
+            'Content-Type' => $mimeType,
+            'Content-Disposition' => 'inline; filename="' . $filename . '"',
+            'Content-Length' => strlen($content),
+        ]);
+    }
 }

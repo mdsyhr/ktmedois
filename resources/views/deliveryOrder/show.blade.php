@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,14 +23,43 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
-        .ktmb-logo-container { display: flex; align-items: center; gap: 15px; }
-        .ktmb-logo-img { height: 40px; background: white; padding: 5px; border-radius: 4px; }
-        .ktmb-system-title { font-size: 1.2rem; font-weight: bold; }
-        .ktmb-system-title span { color: #FFCC00; }
-        .ktmb-user-info { display: flex; align-items: center; gap: 15px; color: rgba(255,255,255,0.9); }
-        .ktmb-user-info a { color: #FFCC00; text-decoration: none; font-weight: 600; }
+
+        .ktmb-logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .ktmb-logo-img {
+            height: 40px;
+            background: white;
+            padding: 5px;
+            border-radius: 4px;
+        }
+
+        .ktmb-system-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .ktmb-system-title span {
+            color: #FFCC00;
+        }
+
+        .ktmb-user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .ktmb-user-info a {
+            color: #FFCC00;
+            text-decoration: none;
+            font-weight: 600;
+        }
 
         /* MAIN CONTENT */
         .content-wrapper {
@@ -45,11 +75,13 @@
             align-items: center;
             margin-bottom: 20px;
         }
+
         .page-header h2 {
             color: #003399;
             margin: 0;
             font-size: 1.5rem;
         }
+
         .btn-back {
             background-color: #6c757d;
             color: white;
@@ -60,16 +92,20 @@
             font-size: 0.9rem;
             transition: background 0.2s;
         }
-        .btn-back:hover { background-color: #5a6268; }
+
+        .btn-back:hover {
+            background-color: #5a6268;
+        }
 
         /* DETAILS CARD */
         .details-card {
             background: #ffffff;
             border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
             overflow: hidden;
             margin-bottom: 20px;
         }
+
         .card-header {
             background-color: #003399;
             color: white;
@@ -80,9 +116,19 @@
         }
 
         /* DETAILS TABLE */
-        .details-table { width: 100%; border-collapse: collapse; }
-        .details-table tr { border-bottom: 1px solid #f1f3f5; }
-        .details-table tr:last-child { border-bottom: none; }
+        .details-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .details-table tr {
+            border-bottom: 1px solid #f1f3f5;
+        }
+
+        .details-table tr:last-child {
+            border-bottom: none;
+        }
+
         .details-table th {
             background-color: #f8f9fa;
             text-align: left;
@@ -93,6 +139,7 @@
             width: 30%;
             border-right: 1px solid #f1f3f5;
         }
+
         .details-table td {
             padding: 15px 20px;
             color: #333;
@@ -107,9 +154,21 @@
             font-weight: 600;
             display: inline-block;
         }
-        .badge-paid     { background-color: #e8f5e9; color: #2e7d32; }
-        .badge-pending  { background-color: #fff3e0; color: #e65100; }
-        .badge-rejected { background-color: #ffebee; color: #d32f2f; }
+
+        .badge-paid {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .badge-pending {
+            background-color: #fff3e0;
+            color: #e65100;
+        }
+
+        .badge-rejected {
+            background-color: #ffebee;
+            color: #d32f2f;
+        }
 
         /* FILE LINKS */
         .file-link {
@@ -126,17 +185,28 @@
             border: 1px solid #bbdefb;
             transition: all 0.2s;
         }
-        .file-link:hover { background: #003399; color: #fff; }
-        .no-file { color: #888; font-style: italic; }
+
+        .file-link:hover {
+            background: #003399;
+            color: #fff;
+        }
+
+        .no-file {
+            color: #888;
+            font-style: italic;
+        }
 
         /* RESPONSIVE (Stacks table on mobile) */
         @media (max-width: 768px) {
-            .details-table th, .details-table td {
+
+            .details-table th,
+            .details-table td {
                 display: block;
                 width: 100%;
                 text-align: left;
                 padding: 10px 15px;
             }
+
             .details-table th {
                 border-right: none;
                 border-bottom: 1px solid #eee;
@@ -144,23 +214,29 @@
                 color: #003399;
                 padding-bottom: 5px;
             }
-            .details-table td { padding-top: 5px; }
+
+            .details-table td {
+                padding-top: 5px;
+            }
         }
     </style>
 </head>
+
 <body>
 
     <!-- HEADER -->
     <header class="ktmb-header">
         <div class="ktmb-logo-container">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6d/KTMB_Official_Logo.jpg" alt="KTMB Logo" class="ktmb-logo-img">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6d/KTMB_Official_Logo.jpg" alt="KTMB Logo"
+                class="ktmb-logo-img">
             <div class="ktmb-system-title">KTM <span>eDOIS</span></div>
         </div>
         <div class="ktmb-user-info">
             <span>{{ auth()->user()->Username }}</span>
             <form method="POST" action="{{ route('logout') }}" style="display:inline;">
                 @csrf
-                <a href="{{ route('logout') }}" onclick="event.preventDefault(); this.closest('form').submit();">Logout</a>
+                <a href="{{ route('logout') }}"
+                    onclick="event.preventDefault(); this.closest('form').submit();">Logout</a>
             </form>
         </div>
     </header>
@@ -168,9 +244,12 @@
     <main class="content-wrapper">
         <!-- Page Title & Back Button -->
         <div class="page-header">
-            <h2>Delivery Order Details</h2>
             <a href="{{ route('delivery.list') }}" class="btn-back">← Back to List</a>
         </div>
+        <div class="page-header">
+            <h2>Delivery Order Details</h2>
+        </div>
+
 
         <!-- 1. ORDER INFORMATION CARD -->
         <div class="details-card">
@@ -216,11 +295,12 @@
                 <tr>
                     <th>Delivery Order File</th>
                     <td>
-                        @if($item->DO_Link)
-                            {{-- NOTE: If you are saving file paths using ->store(), use this: --}}
-                            <a href="{{ asset('storage/' . $item->DO_Link) }}" target="_blank" class="file-link">📄 View / Download DO</a>
-
-                            {{-- NOTE: If you are saving raw BLOB binary data in the DB, you need a controller route to stream it instead. --}}
+                        {{-- ⚠️ Check the actual BLOB column name (e.g., DO_File, DO_Document, etc.) --}}
+                        @if ($item->DO_Link)
+                            <a href="{{ route('delivery.file', ['id' => $item->DO_ID, 'type' => 'do']) }}"
+                                target="_blank" class="file-link">
+                                📄 View / Download DO
+                            </a>
                         @else
                             <span class="no-file">No file attached</span>
                         @endif
@@ -229,8 +309,12 @@
                 <tr>
                     <th>Proof of Delivery / PO File</th>
                     <td>
-                        @if($item->Proof_Link)
-                            <a href="{{ asset('storage/' . $item->Proof_Link) }}" target="_blank" class="file-link">📄 View / Download Proof</a>
+                        {{-- ⚠️ Check the actual BLOB column name (e.g., PO_File, Proof_Document, etc.) --}}
+                        @if ($item->Proof_Link)
+                            <a href="{{ route('delivery.file', ['id' => $item->DO_ID, 'type' => 'proof']) }}"
+                                target="_blank" class="file-link">
+                                📄 View / Download Proof
+                            </a>
                         @else
                             <span class="no-file">No file attached</span>
                         @endif
@@ -241,4 +325,5 @@
 
     </main>
 </body>
+
 </html>

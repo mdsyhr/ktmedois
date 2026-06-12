@@ -43,3 +43,4 @@ Route::post('/delivery/insert', [DeliveryOrderController::class, 'insert'])->nam
 Route::get('/delivery/list', [DeliveryOrderController::class, 'list'])->name('delivery.list');
 Route::get('/delivery/{id}', [DeliveryOrderController::class, 'show'])->name('delivery.show');
 Route::delete('/delivery/{id}/delete', [DeliveryOrderController::class, 'destroy'])->name('delivery.destroy');
+Route::get('/delivery/file/{id}/{type}', [DeliveryOrderController::class, 'showFile'])->name('delivery.file');

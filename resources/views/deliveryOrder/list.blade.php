@@ -217,6 +217,21 @@
             color: #888;
             font-size: 1rem;
         }
+
+        .btn-back {
+            background-color: #6c757d;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: background 0.2s;
+        }
+
+        .btn-back:hover {
+            background-color: #5a6268;
+        }
     </style>
 </head>
 
@@ -240,7 +255,10 @@
     </header>
 
     <main class="content-wrapper">
-        <!-- Page Title & Add Button -->
+        <div class="page-header">
+            <a href="{{ route('dashboard') }}" class="btn-back">← Back to Dashboard</a>
+        </div>
+
         <div class="page-header">
             <h2>Delivery Orders</h2>
             <a href="{{ route('delivery.create') }}" class="btn-primary">+ Submit New DO</a>
