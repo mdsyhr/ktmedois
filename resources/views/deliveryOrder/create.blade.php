@@ -150,21 +150,14 @@
             font-style: italic;
         }
 
-        /* FILE UPLOAD */
+        /* FILE UPLOAD - Pure CSS */
         .file-upload-box {
             position: relative;
             border: 2px dashed #c5cae9;
             border-radius: 8px;
             padding: 25px;
-            text-align: center;
             background: #f5f7ff;
             transition: all 0.2s;
-            cursor: pointer;
-            min-height: 120px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
         }
 
         .file-upload-box:hover {
@@ -172,90 +165,43 @@
             background: #eef1ff;
         }
 
-        .file-upload-box.has-file {
-            border-color: #2e7d32;
-            background: #e8f5e9;
-        }
-
         .file-upload-box input[type="file"] {
-            position: absolute;
-            top: 0;
-            left: 0;
             width: 100%;
-            height: 100%;
-            opacity: 0;
+            padding: 10px;
+            font-size: 0.95rem;
+            color: #333;
             cursor: pointer;
+            background: transparent;
+            border: none;
         }
 
-        .file-upload-icon {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            display: block;
-        }
-
-        .file-upload-text {
-            color: #666;
+        /* Style the native file button */
+        .file-upload-box input[type="file"]::file-selector-button {
+            background: linear-gradient(135deg, #003399, #002266);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
             font-size: 0.9rem;
-            margin-bottom: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-right: 15px;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .file-upload-box input[type="file"]::file-selector-button:hover {
+            background: linear-gradient(135deg, #002266, #001a4d);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0, 51, 153, 0.3);
         }
 
         .file-upload-hint {
-            color: #999;
-            font-size: 0.8rem;
-        }
-
-        .file-name-display {
-            display: none;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 16px;
-            background: white;
-            border-radius: 6px;
+            display: block;
             margin-top: 10px;
-            font-size: 0.9rem;
-            color: #2e7d32;
-            font-weight: 600;
-        }
-
-        .file-name-display.show {
-            display: flex;
-        }
-
-        .file-name-display .file-icon {
-            font-size: 1.2rem;
-        }
-
-        .file-name-display .file-info {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-        }
-
-        .file-name-display .file-name {
-            font-weight: 600;
-            color: #333;
-        }
-
-        .file-name-display .file-size {
-            font-size: 0.75rem;
             color: #888;
-            font-weight: 400;
-        }
-
-        .file-name-display .change-file {
-            margin-left: auto;
-            padding: 4px 12px;
-            background: #003399;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
             font-size: 0.8rem;
-            font-weight: 600;
-        }
-
-        .file-name-display .change-file:hover {
-            background: #002266;
+            font-style: italic;
         }
 
         /* BUTTONS */
@@ -354,7 +300,7 @@
             </div>
 
             <div class="form-card-body">
-                <form action="{{ route('delivery.insert') }}" method="POST" enctype="multipart/form-data" id="deliveryForm">
+                <form action="{{ route('delivery.insert') }}" method="POST" enctype="multipart/form-data">
                     @csrf
 
                     <div class="form-group">
@@ -366,41 +312,17 @@
 
                     <div class="form-group">
                         <label for="DO_File">Upload DO Document <span class="required">*</span></label>
-                        <div class="file-upload-box" id="doUploadBox">
+                        <div class="file-upload-box">
                             <input type="file" id="DO_File" name="DO_File" accept=".pdf,.jpg,.jpeg,.png" required>
-                            <div class="upload-prompt">
-                                <span class="file-upload-icon">📁</span>
-                                <div class="file-upload-text">Click or drag file to upload</div>
-                                <div class="file-upload-hint">PDF, JPG, PNG (Max 10MB)</div>
-                            </div>
-                            <div class="file-name-display" id="doFileName">
-                                <span class="file-icon">📄</span>
-                                <div class="file-info">
-                                    <span class="file-name"></span>
-                                    <span class="file-size"></span>
-                                </div>
-                                <button type="button" class="change-file" onclick="document.getElementById('DO_File').click()">Change</button>
-                            </div>
+                            <span class="file-upload-hint">Accepted formats: PDF, JPG, PNG (Max 10MB)</span>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="PO_File">Upload Proof of Delivery (PDF/JPG): <span class="required">*</span></label>
-                        <div class="file-upload-box" id="proofUploadBox">
+                        <label for="PO_File">Upload Proof of Delivery <span class="required">*</span></label>
+                        <div class="file-upload-box">
                             <input type="file" id="PO_File" name="PO_File" accept=".pdf,.jpg,.jpeg,.png" required>
-                            <div class="upload-prompt">
-                                <span class="file-upload-icon">📁</span>
-                                <div class="file-upload-text">Click or drag file to upload</div>
-                                <div class="file-upload-hint">PDF, JPG, PNG (Max 10MB)</div>
-                            </div>
-                            <div class="file-name-display" id="proofFileName">
-                                <span class="file-icon">📄</span>
-                                <div class="file-info">
-                                    <span class="file-name"></span>
-                                    <span class="file-size"></span>
-                                </div>
-                                <button type="button" class="change-file" onclick="document.getElementById('PO_File').click()">Change</button>
-                            </div>
+                            <span class="file-upload-hint">Accepted formats: PDF, JPG, PNG (Max 10MB)</span>
                         </div>
                     </div>
 
@@ -425,74 +347,6 @@
         </div>
     </main>
 
-    <script>
-        // Handle DO File upload
-        document.getElementById('DO_File').addEventListener('change', function(e) {
-            handleFileSelect(e, 'doUploadBox', 'doFileName');
-        });
-
-        // Handle Proof File upload
-        document.getElementById('PO_File').addEventListener('change', function(e) {
-            handleFileSelect(e, 'proofUploadBox', 'proofFileName');
-        });
-
-        function handleFileSelect(event, boxId, displayId) {
-            const file = event.target.files[0];
-            const uploadBox = document.getElementById(boxId);
-            const fileNameDisplay = document.getElementById(displayId);
-            const uploadPrompt = uploadBox.querySelector('.upload-prompt');
-
-            if (file) {
-                // Format file size
-                const fileSize = formatFileSize(file.size);
-
-                // Update display
-                fileNameDisplay.querySelector('.file-name').textContent = file.name;
-                fileNameDisplay.querySelector('.file-size').textContent = fileSize;
-
-                // Show file name display, hide prompt
-                fileNameDisplay.classList.add('show');
-                uploadPrompt.style.display = 'none';
-                uploadBox.classList.add('has-file');
-            }
-        }
-
-        function formatFileSize(bytes) {
-            if (bytes === 0) return '0 Bytes';
-            const k = 1024;
-            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-            const i = Math.floor(Math.log(bytes) / Math.log(k));
-            return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
-        }
-
-        // Drag and drop visual feedback
-        ['doUploadBox', 'proofUploadBox'].forEach(boxId => {
-            const box = document.getElementById(boxId);
-            const input = box.querySelector('input[type="file"]');
-
-            box.addEventListener('dragover', (e) => {
-                e.preventDefault();
-                box.style.borderColor = '#003399';
-                box.style.background = '#eef1ff';
-            });
-
-            box.addEventListener('dragleave', (e) => {
-                e.preventDefault();
-                if (!box.classList.contains('has-file')) {
-                    box.style.borderColor = '#c5cae9';
-                    box.style.background = '#f5f7ff';
-                }
-            });
-
-            box.addEventListener('drop', (e) => {
-                e.preventDefault();
-                if (!box.classList.contains('has-file')) {
-                    box.style.borderColor = '#c5cae9';
-                    box.style.background = '#f5f7ff';
-                }
-            });
-        });
-    </script>
 </body>
 
 </html>

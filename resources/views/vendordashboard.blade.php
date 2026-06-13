@@ -398,5 +398,12 @@
         &copy; {{ date('Y') }} Keretapi Tanah Melayu Berhad (KTMB). All rights reserved.
     </footer>
 
+    {{-- SUCCESS ALERT --}}
+    @if(session('success'))
+        <script>
+            alert(@json(session('success')));
+        </script>
+    @endif
+
 </body>
 </html>
