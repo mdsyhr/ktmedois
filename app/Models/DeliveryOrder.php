@@ -11,13 +11,24 @@ class DeliveryOrder extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'Cust_ID', 'DO_Number', 'PO_Number', 'Staff_ID', 
-        'DO_Link', 'Proof_Link', 'Status', 'Reason', 
-        'Created_By', 'Created_Date'
+        'Cust_ID',
+        'Supplier_ID',
+        'DO_Number',
+        'PO_Number',
+        'Staff_ID',
+        'DO_Link',
+        'Proof_Link',
+        'Status',
+        'Reason',
+        'Created_Date'
     ];
 
     public function invoices()
     {
         return $this->hasMany(Invoice::class, 'DO_ID', 'DO_ID');
+    }
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class, 'Cust_ID', 'Cust_ID');
     }
 }

@@ -247,8 +247,8 @@
         <a href="{{ route('vendor.dashboard') }}" class="active">
             🏠 Home
         </a>
-        <a href="#">
-            📋 Manage DO
+        <a href="{{ route('delivery.list') }}">
+            📋 Manage Delivery Order
         </a>
         <a href="#">
             🧾 Manage Invoice
@@ -397,6 +397,13 @@
     <footer class="ktmb-footer">
         &copy; {{ date('Y') }} Keretapi Tanah Melayu Berhad (KTMB). All rights reserved.
     </footer>
+
+    {{-- SUCCESS ALERT --}}
+    @if(session('success'))
+        <script>
+            alert(@json(session('success')));
+        </script>
+    @endif
 
 </body>
 </html>
