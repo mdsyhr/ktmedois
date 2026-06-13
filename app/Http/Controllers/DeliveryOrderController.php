@@ -39,17 +39,11 @@ class DeliveryOrderController extends Controller
         return view('deliveryOrder.create', compact('customers'));
     }
 
-    public function store(Request $request) {}
-
     public function show(string $id)
     {
         $item = DeliveryOrder::findOrFail($id);
         return view('deliveryOrder.show', ['item' => $item]);
     }
-
-    public function edit(string $id) {}
-
-    public function update(Request $request, string $id) {}
 
     public function destroy(string $id)
     {
@@ -127,7 +121,6 @@ class DeliveryOrderController extends Controller
         return redirect()->route('delivery.list')->with('success', 'Delivery Order submitted successfully!');
     }
 
-
     public function showFile(string $id, string $type)
     {
         $item = DeliveryOrder::findOrFail($id);
@@ -166,7 +159,6 @@ class DeliveryOrderController extends Controller
             'Content-Length' => strlen($content),
         ]);
     }
-
     public function checkPoNumber(Request $request)
     {
         $poNumber = $request->input('PO_Number');

@@ -291,6 +291,7 @@
                                 <span class="badge {{ $badgeClass }}">{{ $item->Status }}</span>
                             </td>
                             <td>{{ \Carbon\Carbon::parse($item->Created_Date)->format('d M Y') }}</td>
+
                             <td style="text-align: right; white-space: nowrap;">
                                 <a href="{{ route('delivery.show', $item->DO_ID) }}"
                                     class="btn-action btn-view">View</a>

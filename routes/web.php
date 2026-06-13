@@ -46,18 +46,4 @@ Route::get('/delivery/list', [DeliveryOrderController::class, 'list'])->name('de
 Route::get('/delivery/{id}', [DeliveryOrderController::class, 'show'])->name('delivery.show');
 Route::delete('/delivery/{id}/delete', [DeliveryOrderController::class, 'destroy'])->name('delivery.destroy');
 Route::get('/delivery/file/{id}/{type}', [DeliveryOrderController::class, 'showFile'])->name('delivery.file');
-
-Route::get('/test-smtp', function () {
-    try {
-        Mail::raw('This is a test email from KTM eDOIS Module 2. SMTP is working!', function ($message) {
-            $message->to('hanif041220@gmail.com')
-                ->subject('KTM eDOIS SMTP Test');
-        });
-
-        return '✅ Success! Check your inbox. The SMTP connection is working perfectly.';
-    } catch (\Exception $e) {
-        return '❌ Error: ' . $e->getMessage();
-    }
-});
-
 Route::post('/delivery/check-po', [DeliveryOrderController::class, 'checkPoNumber'])->name('delivery.checkPo');

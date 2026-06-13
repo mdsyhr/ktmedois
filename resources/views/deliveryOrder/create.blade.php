@@ -367,7 +367,7 @@
             </div>
         </main>
         <script>
-            //ini dia convert to uppercase dengan auto dash
+            //ini dia convert to uppercase dengan tambah dash automatic
             function formatPoNumber(input) {
                 let value = input.value.toUpperCase();
                 if (value.startsWith('PO') && !value.startsWith('PO-')) {
@@ -389,7 +389,7 @@
                 let messageSpan = document.getElementById('poMessage');
                 let submitBtn = document.querySelector('button[type="submit"]');
 
-                // Reset message
+                // dia clearkan message
                 messageSpan.innerHTML = '';
                 if (submitBtn) submitBtn.disabled = false;
 
