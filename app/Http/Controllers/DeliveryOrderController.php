@@ -123,7 +123,7 @@ class DeliveryOrderController extends Controller
             'Timestamp'       => now(),
         ]);
 
-        return redirect()->route('dashboard')->with('success', 'Delivery Order submitted successfully!');
+        return redirect()->route('delivery.list')->with('success', 'Delivery Order submitted successfully!');
     }
 
 

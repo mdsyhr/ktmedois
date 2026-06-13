@@ -264,7 +264,6 @@
             <a href="{{ route('delivery.create') }}" class="btn-primary">+ Submit New DO</a>
         </div>
 
-        <!-- Table Card -->
         <div class="table-card">
             <table>
                 <thead>
@@ -321,13 +320,13 @@
             </table>
         </div>
 
-        <!-- Success Message Alert -->
-        @if (session('success'))
-            <script>
-                window.alert("{{ session('success') }}");
-            </script>
-        @endif
     </main>
+    {{-- SUCCESS ALERT --}}
+    @if (session('success'))
+        <script>
+            alert(@json(session('success')));
+        </script>
+    @endif
 
 </body>
 

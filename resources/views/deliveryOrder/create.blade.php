@@ -249,6 +249,21 @@
             transform: translateY(-1px);
         }
 
+        .btn-back {
+            background-color: #6c757d;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: background 0.2s;
+        }
+
+        .btn-back:hover {
+            background-color: #5a6268;
+        }
+
         /* Responsive */
         @media (max-width: 600px) {
             .ktmb-header {
@@ -291,61 +306,67 @@
             </form>
         </div>
     </header>
-
     <main class="content-wrapper">
-        <div class="form-card">
-            <div class="form-card-header">
-                <h2>Submit Delivery Order</h2>
-                <p>Fill in the details below to submit a new delivery order</p>
-            </div>
-
-            <div class="form-card-body">
-                <form action="{{ route('delivery.insert') }}" method="POST" enctype="multipart/form-data">
-                    @csrf
-
-                    <div class="form-group">
-                        <label for="PO_Number">Purchase Order (PO) Number <span class="required">*</span></label>
-                        <input type="text" id="PO_Number" name="PO_Number" class="form-control"
-                            placeholder="e.g., PO-2024-1234" required>
-                        <div class="validation-text">Validating against procurement records...</div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="DO_File">Upload DO Document <span class="required">*</span></label>
-                        <div class="file-upload-box">
-                            <input type="file" id="DO_File" name="DO_File" accept=".pdf,.jpg,.jpeg,.png" required>
-                            <span class="file-upload-hint">Accepted formats: PDF, JPG, PNG (Max 10MB)</span>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="PO_File">Upload Proof of Delivery <span class="required">*</span></label>
-                        <div class="file-upload-box">
-                            <input type="file" id="PO_File" name="PO_File" accept=".pdf,.jpg,.jpeg,.png" required>
-                            <span class="file-upload-hint">Accepted formats: PDF, JPG, PNG (Max 10MB)</span>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="customer">Select Customer <span class="required">*</span></label>
-                        <select id="customer" name="Cust_ID" class="form-control" required>
-                            <option value="">-- Select Customer --</option>
-                            @foreach ($customers as $customer)
-                                <option value="{{ $customer->Cust_ID }}">
-                                    {{ $customer->name ?? ($customer->company_name ?? $customer->Cust_Name) }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div class="btn-group">
-                        <a href="{{ route('delivery.list') }}" class="btn btn-cancel">Cancel</a>
-                        <button type="submit" class="btn btn-success">Submit Delivery Order</button>
-                    </div>
-                </form>
-            </div>
+        <div class="page-header">
+            <a href="{{ route('delivery.list') }}" class="btn-back">← Back to List</a>
         </div>
-    </main>
+
+        <main class="content-wrapper">
+            <div class="form-card">
+                <div class="form-card-header">
+                    <h2>Submit Delivery Order</h2>
+                    <p>Fill in the details below to submit a new delivery order</p>
+                </div>
+
+                <div class="form-card-body">
+                    <form action="{{ route('delivery.insert') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+
+                        <div class="form-group">
+                            <label for="PO_Number">Purchase Order (PO) Number <span class="required">*</span></label>
+                            <input type="text" id="PO_Number" name="PO_Number" class="form-control"
+                                placeholder="e.g., PO-2024-1234" required>
+                            <div class="validation-text">Validating against procurement records...</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="DO_File">Upload DO Document <span class="required">*</span></label>
+                            <div class="file-upload-box">
+                                <input type="file" id="DO_File" name="DO_File" accept=".pdf,.jpg,.jpeg,.png"
+                                    required>
+                                <span class="file-upload-hint">Accepted formats: PDF, JPG, PNG (Max 10MB)</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="PO_File">Upload Proof of Delivery <span class="required">*</span></label>
+                            <div class="file-upload-box">
+                                <input type="file" id="PO_File" name="PO_File" accept=".pdf,.jpg,.jpeg,.png"
+                                    required>
+                                <span class="file-upload-hint">Accepted formats: PDF, JPG, PNG (Max 10MB)</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="customer">Select Customer <span class="required">*</span></label>
+                            <select id="customer" name="Cust_ID" class="form-control" required>
+                                <option value="">-- Select Customer --</option>
+                                @foreach ($customers as $customer)
+                                    <option value="{{ $customer->Cust_ID }}">
+                                        {{ $customer->name ?? ($customer->company_name ?? $customer->Cust_Name) }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="btn-group">
+                            <a href="{{ route('delivery.list') }}" class="btn btn-cancel">Cancel</a>
+                            <button type="submit" class="btn btn-success">Submit Delivery Order</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
 
 </body>
 
