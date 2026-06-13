@@ -27,4 +27,8 @@ class DeliveryOrder extends Model
     {
         return $this->hasMany(Invoice::class, 'DO_ID', 'DO_ID');
     }
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class, 'Cust_ID', 'Cust_ID');
+    }
 }

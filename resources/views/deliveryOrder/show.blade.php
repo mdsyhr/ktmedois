@@ -266,7 +266,7 @@
                     <td>
                         @php
                             $badgeClass = 'badge-pending';
-                            if (in_array($item->Status, ['Approved', 'Submitted', 'Completed'])) {
+                            if (in_array($item->Status, ['Approved'])) {
                                 $badgeClass = 'badge-paid';
                             } elseif ($item->Status === 'Rejected') {
                                 $badgeClass = 'badge-rejected';
@@ -276,11 +276,15 @@
                     </td>
                 </tr>
                 <tr>
+                    <th>Customer</th>
+                    <td>{{ $item->customer ? $item->customer->Cust_Name : 'N/A' }}</td>
+                </tr>
+                <tr>
                     <th>Created Date</th>
                     <td>{{ \Carbon\Carbon::parse($item->Created_Date)->format('d M Y, h:i A') }}</td>
                 </tr>
                 <tr>
-                    <th>Reason / Remarks</th>
+                    <th>Reason Of Rejection</th>
                     <td>{{ $item->Reason ?? 'Not applicable' }}</td>
                 </tr>
             </table>

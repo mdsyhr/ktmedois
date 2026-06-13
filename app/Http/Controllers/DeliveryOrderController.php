@@ -98,7 +98,6 @@ class DeliveryOrderController extends Controller
         $doFileContent = $request->file('DO_File')->get();
         $poFileContent = $request->file('PO_File')->get();
 
-        // 4. Save directly to the database
         DeliveryOrder::create([
             'Supplier_ID' => $supplierId,
             'Cust_ID'     => $validated['Cust_ID'],
@@ -106,7 +105,7 @@ class DeliveryOrderController extends Controller
             'PO_Number'   => $validated['PO_Number'],
             'DO_Link'      => $doFileContent,
             'Proof_Link'     => $poFileContent,
-            'Status'      => 'Pending',
+            'Status'      => 'Submitted',
             'Created_Date' => now(),
         ]);
 
@@ -153,7 +152,7 @@ class DeliveryOrderController extends Controller
 
         if (is_resource($content)) {
             $content = stream_get_contents($content);
-            fclose($content); // Close the resource after reading
+            fclose($content);
         }
 
         $finfo = new \finfo(FILEINFO_MIME_TYPE);
@@ -164,5 +163,12 @@ class DeliveryOrderController extends Controller
             'Content-Disposition' => 'inline; filename="' . $filename . '"',
             'Content-Length' => strlen($content),
         ]);
+    }
+
+    public function checkPoNumber(Request $request)
+    {
+        $poNumber = $request->input('PO_Number');
+        $exists = DeliveryOrder::where('PO_Number', $poNumber)->exists();
+        return response()->json(['exists' => $exists]);
     }
 }

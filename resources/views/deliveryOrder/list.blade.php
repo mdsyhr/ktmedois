@@ -283,7 +283,7 @@
                             <td>
                                 @php
                                     $badgeClass = 'badge-pending';
-                                    if (in_array($item->Status, ['Approved', 'Submitted', 'Completed'])) {
+                                    if (in_array($item->Status, ['Approved'])) {
                                         $badgeClass = 'badge-paid';
                                     } elseif ($item->Status === 'Rejected') {
                                         $badgeClass = 'badge-rejected';
@@ -296,7 +296,9 @@
                                 <a href="{{ route('delivery.show', $item->DO_ID) }}"
                                     class="btn-action btn-view">View</a>
 
-                                @if ($item->Status === 'Pending' || $item->Status === 'Rejected')
+                                @if ($item->Status === 'Approved')
+                                    <a href="#" class="btn-action btn-invoice">Create Invoice</a>
+                                @elseif ($item->Status === 'Submitted' || $item->Status === 'Rejected')
                                     <form action="{{ route('delivery.destroy', $item->DO_ID) }}" method="POST"
                                         style="display: inline;">
                                         @csrf
@@ -304,6 +306,7 @@
                                         <button type="submit" class="btn-action btn-delete"
                                             onclick="return confirm('Are you sure you want to delete this?');">Delete</button>
                                     </form>
+                                @elseif ($item->Status === 'Under Review')
                                 @else
                                     <a href="#" class="btn-action btn-invoice">Create Invoice</a>
                                 @endif

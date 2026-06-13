@@ -321,13 +321,19 @@
                 <div class="form-card-body">
                     <form action="{{ route('delivery.insert') }}" method="POST" enctype="multipart/form-data">
                         @csrf
-
                         <div class="form-group">
+                            <label for="PO_Number">Purchase Order (PO) Number <span class="required">*</span></label>
+                            <input type="text" id="PO_Number" name="PO_Number" class="form-control"
+                                placeholder="e.g., PO20241234" required>
+                            <div class="validation-text"><span id="poMessage"></span></div>
+                        </div>
+
+                        {{-- <div class="form-group">
                             <label for="PO_Number">Purchase Order (PO) Number <span class="required">*</span></label>
                             <input type="text" id="PO_Number" name="PO_Number" class="form-control"
                                 placeholder="e.g., PO-2024-1234" required>
                             <div class="validation-text">Validating against procurement records...</div>
-                        </div>
+                        </div> --}}
 
                         <div class="form-group">
                             <label for="DO_File">Upload DO Document <span class="required">*</span></label>
@@ -367,7 +373,86 @@
                 </div>
             </div>
         </main>
+        <script>
+            //ini dia convert to uppercase dengan auto dash
+            function formatPoNumber(input) {
+                let value = input.value.toUpperCase();
+                if (value.startsWith('PO') && !value.startsWith('PO-')) {
+                    if (value.length >= 2) {
+                        value = 'PO-' + value.substring(2);
+                    }
+                }
+                input.value = value;
+            }
+            //ini dia validate format PO number
+            function validatePoFormat(poValue) {
 
+                const pattern = /^PO-\d{4}\d{1,6}$/;
+                return pattern.test(poValue);
+            }
+
+            function checkPoNumber() {
+                let poInput = document.getElementById('PO_Number');
+                let poValue = poInput.value.trim();
+                let messageSpan = document.getElementById('poMessage');
+                let submitBtn = document.querySelector('button[type="submit"]');
+
+                // Reset message
+                messageSpan.innerHTML = '';
+                if (submitBtn) submitBtn.disabled = false;
+
+                // Empty field – no validation yet
+                if (poValue === '') {
+                    return;
+                }
+
+                // 1. Format validation
+                if (!validatePoFormat(poValue)) {
+                    messageSpan.innerHTML =
+                        '<span style="color:red;">Invalid format. Use PO-YYYYNNN (e.g., PO-20251234) with year + up to 6 digits.</span>';
+                    if (submitBtn) submitBtn.disabled = true;
+                    return;
+                }
+
+                // 2. Check existence in database (AJAX)
+                fetch('{{ route('delivery.checkPo') }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify({
+                            PO_Number: poValue
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.exists) {
+                            messageSpan.innerHTML =
+                                '<span style="color:red;">PO Number already exists in the database.</span>';
+                            if (submitBtn) submitBtn.disabled = true;
+                        } else {
+                            messageSpan.innerHTML =
+                                '<span style="color:green;">PO Number is available and format is correct.</span>';
+                            if (submitBtn) submitBtn.disabled = false;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        if (submitBtn) submitBtn.disabled = false;
+                    });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+                let poInput = document.getElementById('PO_Number');
+                if (poInput) {
+                    poInput.addEventListener('input', function() {
+                        formatPoNumber(this);
+                    });
+                    poInput.addEventListener('blur', checkPoNumber);
+                }
+            });
+        </script>
 </body>
 
 </html>
