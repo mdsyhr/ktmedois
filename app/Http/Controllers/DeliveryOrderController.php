@@ -7,6 +7,7 @@ use App\Models\DeliveryOrder;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\AuditLog;
 
 
 class DeliveryOrderController extends Controller
@@ -34,7 +35,7 @@ class DeliveryOrderController extends Controller
 
     public function create()
     {
-        $customers = Customer::all();  // Returns Collection of Customer models
+        $customers = Customer::all();
         return view('deliveryOrder.create', compact('customers'));
     }
 
@@ -62,6 +63,15 @@ class DeliveryOrderController extends Controller
         $delivery = DeliveryOrder::find($id);
         if ($delivery) {
             $delivery->delete();
+            $affectedRecord = "[DeliveryOrder] supplier {$supplier->Supplier_ID} delete {$delivery->PO_Number}";
+
+            AuditLog::create([
+                'User_ID'         => $user->User_ID,
+                'Action'          => 'DELETE',
+                'Affected_Record' => $affectedRecord,
+                'Timestamp'       => now(),
+            ]);
+
             return redirect()->route('delivery.list')->with('success', 'Delivery Order deleted successfully.');
         }
         return redirect()->route('delivery.list')->with('error', 'Delivery Order not found.');
@@ -98,6 +108,19 @@ class DeliveryOrderController extends Controller
             'Proof_Link'     => $poFileContent,
             'Status'      => 'Pending',
             'Created_Date' => now(),
+        ]);
+
+        $affectedRecord = sprintf(
+            "[DeliveryOrder] supplier %s create %s",
+            $supplierId,
+            $validated['PO_Number']
+        );
+
+        AuditLog::create([
+            'User_ID'         => $user->User_ID,
+            'Action'          => 'CREATE',
+            'Affected_Record' => $affectedRecord,
+            'Timestamp'       => now(),
         ]);
 
         return redirect()->route('dashboard')->with('success', 'Delivery Order submitted successfully!');

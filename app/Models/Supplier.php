@@ -27,4 +27,8 @@ class Supplier extends Model
     {
         return $this->belongsTo(User::class, 'User_ID', 'User_ID');
     }
+    public function deliveryOrders()
+    {
+        return $this->hasMany(DeliveryOrder::class, 'Supplier_ID', 'Supplier_ID');
+    }
 }
