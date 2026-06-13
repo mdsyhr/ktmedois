@@ -6,19 +6,19 @@ use Illuminate\Support\Facades\Route;
 use App\Models\Supplier;
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
 });
 
 // Vendor Dashboard
 Route::get('/vendor/dashboard', function () {
     $supplier = Supplier::where('User_ID', auth()->user()->User_ID)->first();
-    return view('vendordashboard', compact('supplier'));
+    return view('usermanagement.vendor.Vendor_DashboardView', compact('supplier'));
 })->middleware(['auth'])->name('vendor.dashboard');
 
 // Default dashboard
 Route::get('/dashboard', function () {
     $supplier = Supplier::where('User_ID', auth()->user()->User_ID)->first();
-    return view('vendordashboard', compact('supplier'));
+    return view('usermanagement.vendor.Vendor_DashboardView', compact('supplier'));
 })->middleware(['auth'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
