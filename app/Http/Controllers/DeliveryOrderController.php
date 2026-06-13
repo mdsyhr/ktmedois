@@ -53,6 +53,7 @@ class DeliveryOrderController extends Controller
 
     public function destroy(string $id)
     {
+        date_default_timezone_set('Asia/Kuala_Lumpur');
         $user = Auth::user();
         $supplier = Supplier::where('User_ID', $user->User_ID)->first();
 
@@ -97,11 +98,12 @@ class DeliveryOrderController extends Controller
 
         $doFileContent = $request->file('DO_File')->get();
         $poFileContent = $request->file('PO_File')->get();
+        date_default_timezone_set('Asia/Kuala_Lumpur');
 
         DeliveryOrder::create([
             'Supplier_ID' => $supplierId,
             'Cust_ID'     => $validated['Cust_ID'],
-            'DO_Number' => 'DO-' . now()->format('ymdHis'),
+            'DO_Number' => 'DO-' . date('ymdHis'),
             'PO_Number'   => $validated['PO_Number'],
             'DO_Link'      => $doFileContent,
             'Proof_Link'     => $poFileContent,

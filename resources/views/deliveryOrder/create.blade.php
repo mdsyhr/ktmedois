@@ -379,8 +379,7 @@
             }
             //ini dia validate format PO number
             function validatePoFormat(poValue) {
-
-                const pattern = /^PO-\d{4}\d{1,6}$/;
+                const pattern = /^PO-2025\d{1,6}$/;
                 return pattern.test(poValue);
             }
 
