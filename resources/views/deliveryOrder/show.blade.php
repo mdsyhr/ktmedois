@@ -224,7 +224,6 @@
 
 <body>
 
-    <!-- HEADER -->
     <header class="ktmb-header">
         <div class="ktmb-logo-container">
             <img src="https://upload.wikimedia.org/wikipedia/commons/6/6d/KTMB_Official_Logo.jpg" alt="KTMB Logo"
@@ -251,7 +250,6 @@
         </div>
 
 
-        <!-- 1. ORDER INFORMATION CARD -->
         <div class="details-card">
             <div class="card-header">Order Information</div>
             <table class="details-table">
@@ -288,18 +286,16 @@
             </table>
         </div>
 
-        <!-- 2. ATTACHED DOCUMENTS CARD -->
         <div class="details-card">
             <div class="card-header">Attached Documents</div>
             <table class="details-table">
                 <tr>
                     <th>Delivery Order File</th>
                     <td>
-                        {{-- ⚠️ Check the actual BLOB column name (e.g., DO_File, DO_Document, etc.) --}}
                         @if ($item->DO_Link)
                             <a href="{{ route('delivery.file', ['id' => $item->DO_ID, 'type' => 'do']) }}"
                                 target="_blank" class="file-link">
-                                📄 View / Download DO
+                                View Delivery Orders
                             </a>
                         @else
                             <span class="no-file">No file attached</span>
@@ -307,13 +303,12 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>Proof of Delivery / PO File</th>
+                    <th>Proof of Delivery</th>
                     <td>
-                        {{-- ⚠️ Check the actual BLOB column name (e.g., PO_File, Proof_Document, etc.) --}}
                         @if ($item->Proof_Link)
                             <a href="{{ route('delivery.file', ['id' => $item->DO_ID, 'type' => 'proof']) }}"
                                 target="_blank" class="file-link">
-                                📄 View / Download Proof
+                                View Proof Of Delivery
                             </a>
                         @else
                             <span class="no-file">No file attached</span>
