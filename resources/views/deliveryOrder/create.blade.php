@@ -328,13 +328,6 @@
                             <div class="validation-text"><span id="poMessage"></span></div>
                         </div>
 
-                        {{-- <div class="form-group">
-                            <label for="PO_Number">Purchase Order (PO) Number <span class="required">*</span></label>
-                            <input type="text" id="PO_Number" name="PO_Number" class="form-control"
-                                placeholder="e.g., PO-2024-1234" required>
-                            <div class="validation-text">Validating against procurement records...</div>
-                        </div> --}}
-
                         <div class="form-group">
                             <label for="DO_File">Upload DO Document <span class="required">*</span></label>
                             <div class="file-upload-box">
