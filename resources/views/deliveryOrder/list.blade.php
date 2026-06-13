@@ -237,7 +237,6 @@
 
 <body>
 
-    <!-- HEADER -->
     <header class="ktmb-header">
         <div class="ktmb-logo-container">
             <img src="https://upload.wikimedia.org/wikipedia/commons/6/6d/KTMB_Official_Logo.jpg" alt="KTMB Logo"
@@ -324,7 +323,6 @@
         </div>
 
     </main>
-    {{-- SUCCESS ALERT --}}
     @if (session('success'))
         <script>
             alert(@json(session('success')));
