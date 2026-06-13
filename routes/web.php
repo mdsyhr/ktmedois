@@ -4,7 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\DeliveryOrderController;
 use Illuminate\Support\Facades\Route;
-use App\Models\Supplier;
+use App\Models\VendorRegistryIntegration\Supplier;
 use Illuminate\Support\Facades\Mail;
 
 

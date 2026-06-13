@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\VendorRegistryIntegration;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\LoginRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use App\Models\VendorRegistryIntegration\User;
+
 
 class AuthenticatedSessionController extends Controller
 {
