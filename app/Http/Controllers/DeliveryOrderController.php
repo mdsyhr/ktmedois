@@ -153,6 +153,10 @@ class DeliveryOrderController extends Controller
         $finfo = new \finfo(FILEINFO_MIME_TYPE);
         $mimeType = $finfo->buffer($content) ?: 'application/octet-stream';
 
+        if ($mimeType === 'application/pdf') {
+            $filename .= '.pdf';
+        }
+
         return response($content, 200, [
             'Content-Type' => $mimeType,
             'Content-Disposition' => 'inline; filename="' . $filename . '"',
