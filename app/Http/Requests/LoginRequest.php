@@ -9,8 +9,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
-use App\Models\VendorRegistryIntegration\User;
-use App\Models\VendorRegistryIntegration\ExternalSupplier;
+use App\Models\User;
+use App\Models\ExternalSupplier;
 
 class LoginRequest extends FormRequest
 {
