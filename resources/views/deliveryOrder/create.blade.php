@@ -380,7 +380,7 @@
 
             //ini dia validate format PO number
             function validatePoFormat(poValue) {
-                const pattern = /^PO-2025\d{1,6}$/;
+                const pattern = /^PO-(202[5-9]|20[3-9]\d|2[1-9]\d{2}|[3-9]\d{3})\d{1,6}$/;
                 return pattern.test(poValue);
             }
 
@@ -423,7 +423,7 @@
                 // 1. Format validation
                 if (!validatePoFormat(poValue)) {
                     messageSpan.innerHTML =
-                        '<span style="color:red;">Invalid format. Use PO-YYYYNNN (e.g., PO-20251234) with year + up to 6 digits.</span>';
+                        '<span style="color:red;">Invalid format. Use PO-YYYYNNN (e.g., PO-20251234) with year starting 2025 and above + up to 6 digits.</span>';
                     if (submitBtn) submitBtn.disabled = true;
                     return;
                 }
