@@ -19,4 +19,9 @@ class Invoice extends Model
     {
         return $this->hasMany(ItemDetail::class, 'Invoice_ID', 'Invoice_ID');
     }
+
+    public function deliveryOrder()
+    {
+        return $this->belongsTo(DeliveryOrder::class, 'DO_ID', 'DO_ID');
+    }
 }

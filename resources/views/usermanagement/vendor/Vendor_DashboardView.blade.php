@@ -320,77 +320,26 @@
         <div class="stats-grid">
             <div class="stat-card">
                 <div class="stat-info">
-                    <div class="stat-number">0</div>
+                    <div class="stat-number">{{ $totalDO }}</div>
                     <div class="stat-label">Total Delivery Orders</div>
                 </div>
                 <div class="stat-icon">📋</div>
             </div>
             <div class="stat-card orange">
                 <div class="stat-info">
-                    <div class="stat-number">0</div>
+                    <div class="stat-number">{{ $pendingDO }}</div>
                     <div class="stat-label">Pending Orders</div>
                 </div>
                 <div class="stat-icon">⏳</div>
             </div>
             <div class="stat-card green">
                 <div class="stat-info">
-                    <div class="stat-number">0</div>
+                    <div class="stat-number">{{ $totalInvoice }}</div>
                     <div class="stat-label">Total Invoices</div>
                 </div>
                 <div class="stat-icon">🧾</div>
             </div>
         </div>
-
-        <!-- RECENT DELIVERY ORDERS -->
-        <div class="section-card">
-            <div class="section-header">
-                <h3>📋 Recent Delivery Orders</h3>
-                <a href="#">View All</a>
-            </div>
-            <table class="ktmb-table">
-                <thead>
-                    <tr>
-                        <th>DO Reference</th>
-                        <th>PO Number</th>
-                        <th>Date</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td colspan="4" style="text-align:center; color:#999; padding:20px;">
-                            No delivery orders found.
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <!-- RECENT INVOICES -->
-        <div class="section-card">
-            <div class="section-header">
-                <h3>🧾 Recent Invoices</h3>
-                <a href="#">View All</a>
-            </div>
-            <table class="ktmb-table">
-                <thead>
-                    <tr>
-                        <th>Invoice No</th>
-                        <th>DO Reference</th>
-                        <th>Amount</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td colspan="4" style="text-align:center; color:#999; padding:20px;">
-                            No invoices found.
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
     </div>
 
     <!-- FOOTER -->
