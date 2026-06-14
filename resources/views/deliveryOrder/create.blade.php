@@ -366,8 +366,7 @@
                 </div>
             </div>
         </main>
-       <script>
-            //ini dia convert to uppercase dengan tambah dash automatic
+        <script>
             function formatPoNumber(input) {
                 let value = input.value.toUpperCase();
                 if (value.startsWith('PO') && !value.startsWith('PO-')) {
@@ -378,19 +377,17 @@
                 input.value = value;
             }
 
-            //ini dia validate format PO number
             function validatePoFormat(poValue) {
                 const pattern = /^PO-(202[5-9]|20[3-9]\d|2[1-9]\d{2}|[3-9]\d{3})\d{1,6}$/;
                 return pattern.test(poValue);
             }
 
-            // Validate file extension - only allow PDF and images
             function validateFileExtension(input) {
                 const allowedExtensions = ['pdf', 'jpg', 'jpeg', 'png'];
                 const file = input.files[0];
 
                 if (!file) {
-                    return true; // No file selected, validation passes
+                    return true;
                 }
 
                 const fileName = file.name.toLowerCase();
@@ -398,25 +395,25 @@
 
                 if (!allowedExtensions.includes(fileExtension)) {
                     alert(`Invalid file type: .${fileExtension}\n\nPlease upload only PDF, JPG, JPEG, or PNG files.`);
-                    input.value = ''; // Clear the invalid file
+                    input.value = '';
                     return false;
                 }
 
                 return true;
             }
 
-            // Validate file size - max 10MB
+
             function validateFileSize(input) {
                 const file = input.files[0];
 
                 if (!file) {
-                    return true; // No file selected, validation passes
+                    return true;
                 }
 
-                const maxSize = 10 * 1024 * 1024; // 10MB in bytes
+                const maxSize = 10 * 1024 * 1024;
                 if (file.size > maxSize) {
                     alert(`File size is too large: ${(file.size / 1024 / 1024).toFixed(2)}MB\n\nMaximum allowed size is 10MB.`);
-                    input.value = ''; // Clear the invalid file
+                    input.value = '';
                     return false;
                 }
 
@@ -429,16 +426,13 @@
                 let messageSpan = document.getElementById('poMessage');
                 let submitBtn = document.querySelector('button[type="submit"]');
 
-                // dia clearkan message
                 messageSpan.innerHTML = '';
                 if (submitBtn) submitBtn.disabled = false;
 
-                // Empty field – no validation yet
                 if (poValue === '') {
                     return;
                 }
 
-                // 1. Format validation
                 if (!validatePoFormat(poValue)) {
                     messageSpan.innerHTML =
                         '<span style="color:red;">Invalid format. Use PO-YYYYNNN (e.g., PO-20251234) with year starting 2025 and above + up to 6 digits.</span>';
@@ -446,7 +440,6 @@
                     return;
                 }
 
-                // 2. Check existence in database (AJAX)
                 fetch('{{ route('delivery.checkPo') }}', {
                         method: 'POST',
                         headers: {
@@ -475,9 +468,7 @@
                     });
             }
 
-            // ALL event listeners in ONE DOMContentLoaded
             document.addEventListener('DOMContentLoaded', function() {
-                // PO Number validation events
                 let poInput = document.getElementById('PO_Number');
                 if (poInput) {
                     poInput.addEventListener('input', function() {
@@ -486,21 +477,20 @@
                     poInput.addEventListener('blur', checkPoNumber);
                 }
 
-                // File validation events
                 const doFileInput = document.getElementById('DO_File');
                 const poFileInput = document.getElementById('PO_File');
 
                 if (doFileInput) {
                     doFileInput.addEventListener('change', function() {
                         validateFileExtension(this);
-                        validateFileSize(this); // Added size validation
+                        validateFileSize(this);
                     });
                 }
 
                 if (poFileInput) {
                     poFileInput.addEventListener('change', function() {
                         validateFileExtension(this);
-                        validateFileSize(this); // Added size validation
+                        validateFileSize(this);
                     });
                 }
             });
