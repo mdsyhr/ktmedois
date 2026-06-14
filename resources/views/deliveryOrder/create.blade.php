@@ -377,10 +377,32 @@
                 }
                 input.value = value;
             }
+
             //ini dia validate format PO number
             function validatePoFormat(poValue) {
-                const pattern = /^PO-2025\d{1,6}$/;
+                const pattern = /^PO-(202[5-9]|20[3-9]\d|2[1-9]\d{2}|[3-9]\d{3})\d{1,6}$/;
                 return pattern.test(poValue);
+            }
+
+            // Validate file extension - only allow PDF and images
+            function validateFileExtension(input) {
+                const allowedExtensions = ['pdf', 'jpg', 'jpeg', 'png'];
+                const file = input.files[0];
+
+                if (!file) {
+                    return true; // No file selected, validation passes
+                }
+
+                const fileName = file.name.toLowerCase();
+                const fileExtension = fileName.split('.').pop();
+
+                if (!allowedExtensions.includes(fileExtension)) {
+                    alert(`Invalid file type: .${fileExtension}\n\nPlease upload only PDF, JPG, JPEG, or PNG files.`);
+                    input.value = ''; // Clear the invalid file
+                    return false;
+                }
+
+                return true;
             }
 
             function checkPoNumber() {
@@ -401,7 +423,7 @@
                 // 1. Format validation
                 if (!validatePoFormat(poValue)) {
                     messageSpan.innerHTML =
-                        '<span style="color:red;">Invalid format. Use PO-YYYYNNN (e.g., PO-20251234) with year + up to 6 digits.</span>';
+                        '<span style="color:red;">Invalid format. Use PO-YYYYNNN (e.g., PO-20251234) with year starting 2025 and above + up to 6 digits.</span>';
                     if (submitBtn) submitBtn.disabled = true;
                     return;
                 }
@@ -435,13 +457,31 @@
                     });
             }
 
+            // ALL event listeners in ONE DOMContentLoaded
             document.addEventListener('DOMContentLoaded', function() {
+                // PO Number validation events
                 let poInput = document.getElementById('PO_Number');
                 if (poInput) {
                     poInput.addEventListener('input', function() {
                         formatPoNumber(this);
                     });
                     poInput.addEventListener('blur', checkPoNumber);
+                }
+
+                // File validation events
+                const doFileInput = document.getElementById('DO_File');
+                const poFileInput = document.getElementById('PO_File');
+
+                if (doFileInput) {
+                    doFileInput.addEventListener('change', function() {
+                        validateFileExtension(this);
+                    });
+                }
+
+                if (poFileInput) {
+                    poFileInput.addEventListener('change', function() {
+                        validateFileExtension(this);
+                    });
                 }
             });
         </script>
