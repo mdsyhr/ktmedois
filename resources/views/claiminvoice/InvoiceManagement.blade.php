@@ -596,7 +596,12 @@
 
                 recalculate();
                 logAudit('AI_EXTRACTION', `Successfully parsed data layouts out of: ${file.name}`);
-                alert('Invoice file processed! System parameters auto-filled successfully.');
+
+                if (data.ocr_warning) {
+                    alert('Invoice file processed via image scanning (OCR). Please double-check the Invoice Number and item details below carefully, as scanned text can sometimes be misread.');
+                } else {
+                    alert('Invoice file processed! System parameters auto-filled successfully.');
+                }
             } else {
                 alert('Extraction error: ' + data.message);
             }
