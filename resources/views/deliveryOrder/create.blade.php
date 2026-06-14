@@ -366,7 +366,7 @@
                 </div>
             </div>
         </main>
-        <script>
+       <script>
             //ini dia convert to uppercase dengan tambah dash automatic
             function formatPoNumber(input) {
                 let value = input.value.toUpperCase();
@@ -398,6 +398,24 @@
 
                 if (!allowedExtensions.includes(fileExtension)) {
                     alert(`Invalid file type: .${fileExtension}\n\nPlease upload only PDF, JPG, JPEG, or PNG files.`);
+                    input.value = ''; // Clear the invalid file
+                    return false;
+                }
+
+                return true;
+            }
+
+            // Validate file size - max 10MB
+            function validateFileSize(input) {
+                const file = input.files[0];
+
+                if (!file) {
+                    return true; // No file selected, validation passes
+                }
+
+                const maxSize = 10 * 1024 * 1024; // 10MB in bytes
+                if (file.size > maxSize) {
+                    alert(`File size is too large: ${(file.size / 1024 / 1024).toFixed(2)}MB\n\nMaximum allowed size is 10MB.`);
                     input.value = ''; // Clear the invalid file
                     return false;
                 }
@@ -475,12 +493,14 @@
                 if (doFileInput) {
                     doFileInput.addEventListener('change', function() {
                         validateFileExtension(this);
+                        validateFileSize(this); // Added size validation
                     });
                 }
 
                 if (poFileInput) {
                     poFileInput.addEventListener('change', function() {
                         validateFileExtension(this);
+                        validateFileSize(this); // Added size validation
                     });
                 }
             });
