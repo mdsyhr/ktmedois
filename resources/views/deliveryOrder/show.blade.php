@@ -254,12 +254,13 @@
             <div class="card-header">Order Information</div>
             <table class="details-table">
                 <tr>
-                    <th>DO Number</th>
-                    <td><strong>{{ $item->DO_Number ?? 'N/A' }}</strong></td>
+
+                    <th>PO Number</th>
+                   <td><strong>{{ $item->PO_Number }}</strong></td>
                 </tr>
                 <tr>
-                    <th>PO Number</th>
-                    <td>{{ $item->PO_Number }}</td>
+                    <th>DO Number</th>
+                    <td>{{ $item->DO_Number ?? 'N/A' }}</td>
                 </tr>
                 <tr>
                     <th>Status</th>

@@ -267,8 +267,8 @@
             <table>
                 <thead>
                     <tr>
-                        <th>DO Number</th>
                         <th>PO Number</th>
+                        <th>DO Number</th>
                         <th>Status</th>
                         <th>Created Date</th>
                         <th style="text-align: right;">Actions</th>
@@ -277,8 +277,9 @@
                 <tbody>
                     @forelse ($collection as $item)
                         <tr>
-                            <td><strong>{{ $item->DO_Number ?? 'N/A' }}</strong></td>
-                            <td>{{ $item->PO_Number }}</td>
+                            <td><strong>{{ $item->PO_Number }}</strong></td>
+                            <td>{{ $item->DO_Number ?? 'N/A' }}</td>
+
                             <td>
                                 @php
                                     $badgeClass = 'badge-pending';
