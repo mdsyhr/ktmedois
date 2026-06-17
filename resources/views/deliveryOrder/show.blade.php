@@ -16,25 +16,59 @@
             padding: 0;
         }
 
-       /* --- NAV BAR --- */
+        .btn {
+            padding: 12px 28px;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-block;
+        }
+
+        .btn-cancel {
+            background: #f5f5f5;
+            color: #555;
+            border: 1px solid #ddd;
+        }
+
+        .btn-cancel:hover {
+            background: #e0e0e0;
+            color: #333;
+        }
+
+        /* --- NAV BAR --- */
         .ktmb-nav {
             background-color: #002266;
             display: flex;
             align-items: stretch;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
+
         .ktmb-nav a {
-            display: flex; align-items: center; gap: 8px;
-            padding: 14px 28px; color: rgba(255,255,255,0.85);
-            text-decoration: none; font-weight: 500; font-size: 0.95rem;
-            border-bottom: 3px solid transparent; transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 28px;
+            color: rgba(255, 255, 255, 0.85);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
         }
+
         .ktmb-nav a:hover {
-            background-color: rgba(255,255,255,0.1); color: #ffffff;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
         }
+
         .ktmb-nav a.active {
-            color: #FFCC00; border-bottom-color: #FFCC00;
-            background-color: rgba(255,204,0,0.08);
+            color: #FFCC00;
+            border-bottom-color: #FFCC00;
+            background-color: rgba(255, 204, 0, 0.08);
         }
 
         /* MAIN CONTENT CONTAINER */
@@ -162,6 +196,7 @@
 
         /* RESPONSIVE OVERRIDES */
         @media (max-width: 768px) {
+
             .details-table th,
             .details-table td {
                 display: block;
@@ -220,10 +255,13 @@
     </nav>
 
     <main class="content-container">
-        
+
         <!-- Standard wide-styled layout wrapper -->
         <div class="ktmb-card-wide">
-            
+
+            <div class="">
+                <a href="{{ route('delivery.list') }}" class="btn btn-cancel">&lt; back to list</a>
+            </div>
             <div class="page-header">
                 <h2>Delivery Order Details</h2>
             </div>
@@ -299,7 +337,7 @@
                     </tr>
                 </table>
             </div>
-            
+
         </div>
     </main>
 </body>
