@@ -17,43 +17,57 @@ class InvoiceController extends Controller
 {
     // 1. Main Invoice List Page
     public function index()
-    {
-        // 1. Grab all DO_IDs that already have an invoice attached
-        $claimedDoIds = Invoice::pluck('DO_ID')->toArray();
+{
+    // 1. Get the logged-in user and identify their Supplier Profile
+    $user = \Illuminate\Support\Facades\Auth::user();
+    $supplier = \App\Models\Supplier::where('User_ID', $user->User_ID)->first();
 
-        // 2. Fetch ALL approved DOs
-        $deliveryOrders = DeliveryOrder::select(
-                'delivery_order.*',
-                'customers.Cust_Name',
-                'staff.Staff_Name'
-            )
-            ->leftJoin('customers', 'delivery_order.Cust_ID', '=', 'customers.Cust_ID')
-            ->leftJoin('staff',     'delivery_order.Staff_ID', '=', 'staff.Staff_ID')
-            ->where('delivery_order.Status', 'Approved') 
-            ->orderBy('delivery_order.Created_Date', 'desc')
-            ->get();
-
-        // Fetch all invoices with DO number
-        $invoices = Invoice::select(
-                'invoice.*',
-                'delivery_order.DO_Number as do_number'
-            )
-            ->leftJoin('delivery_order', 'invoice.DO_ID', '=', 'delivery_order.DO_ID')
-            ->orderBy('invoice.Created_At', 'desc')
-            ->get();
-
-        // Summary stats
-        $stats = [
-            'total'    => $invoices->count(),
-            'paid'     => $invoices->where('Status', 'Approved')->sum('Total'),
-            'pending'  => $invoices->whereIn('Status', ['Submitted', 'Pending'])->sum('Total'),
-            'rejected' => $invoices->where('Status', 'Rejected')->count(),
-        ];
-
-        $this->auditLog('VIEW', 'Invoice', 'Accessed Invoice Management page');
-
-        return view('claiminvoice.ApprovedDOList', compact('deliveryOrders', 'invoices', 'stats', 'claimedDoIds'));
+    if (!$supplier) {
+        return redirect()->back()->with('error', 'Supplier profile not found.');
     }
+
+    $supplierId = $supplier->Supplier_ID;
+
+    // 2. Grab all DO_IDs that already have an invoice attached
+    $claimedDoIds = Invoice::pluck('DO_ID')->toArray();
+
+    // 3. Fetch approved DOs belonging ONLY to this specific supplier
+    $deliveryOrders = DeliveryOrder::select(
+            'delivery_order.*',
+            'customers.Cust_Name',
+            'staff.Staff_Name'
+        )
+        ->leftJoin('customers', 'delivery_order.Cust_ID', '=', 'customers.Cust_ID')
+        ->leftJoin('staff',     'delivery_order.Staff_ID', '=', 'staff.Staff_ID')
+        ->where('delivery_order.Supplier_ID', $supplierId) // <-- Filtered by Supplier!
+        ->where('delivery_order.Status', 'Approved') 
+        ->orderBy('delivery_order.Created_Date', 'desc')
+        ->get();
+
+    // 4. Fetch all invoices belonging ONLY to this supplier's Delivery Orders
+    $invoices = Invoice::select(
+            'invoice.*',
+            'delivery_order.DO_Number as do_number'
+        )
+        ->leftJoin('delivery_order', 'invoice.DO_ID', '=', 'delivery_order.DO_ID')
+        ->where('delivery_order.Supplier_ID', $supplierId) // <-- Filtered by Supplier!
+        ->orderBy('invoice.Created_At', 'desc')
+        ->get();
+
+    // 5. Summary stats (Dynamically calculates based on the filtered vendor invoices)
+    $stats = [
+        'total'    => $invoices->count(),
+        'paid'     => $invoices->where('Status', 'Approved')->sum('Total'),
+        'pending'  => $invoices->whereIn('Status', ['Submitted', 'Pending'])->sum('Total'),
+        'rejected' => $invoices->where('Status', 'Rejected')->count(),
+    ];
+
+    // 6. Keep your Audit Log intact
+    $this->auditLog('VIEW', 'Invoice', 'Accessed Invoice Management page');
+
+    // 7. Return your precise view directory structure
+    return view('claiminvoice.ApprovedDOList', compact('deliveryOrders', 'invoices', 'stats', 'claimedDoIds'));
+}
 
     // 2. AJAX: Return item_details for a given DO
     public function getDoItems($doId)

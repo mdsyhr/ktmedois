@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>KTM eDOIS - Approved Delivery Orders</title>
+    <link rel="stylesheet" href="{{ asset('css/ktmb.css') }}">
 </head>
 
 <style>
@@ -30,76 +31,26 @@
         flex-direction: column;
     }
 
-    /* --- HEADER --- */
-    header {
-        background-color: var(--primary-blue);
-        color: var(--white);
-        padding: 15px 30px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    }
-
-    .logo-container { display: flex; align-items: center; gap: 15px; }
-
-    .logo-img {
-        width: 80px; height: 50px;
-        background-color: var(--white);
-        border-radius: 5px;
-        object-fit: contain;
-        border: 2px solid var(--accent-yellow);
-        padding: 2px;
-    }
-
-    .system-title { font-size: 1.5rem; font-weight: bold; color: var(--white); }
-    .system-title span { color: var(--accent-yellow); }
-
-    .simulation-controls {
-        background: rgba(255,255,255,0.2);
-        padding: 5px 15px;
-        border-radius: 20px;
-        font-size: 0.85rem;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        color: var(--white);
-    }
-
-    .toggle-switch {
-        cursor: pointer; background: #333; border-radius: 10px; padding: 2px;
-        width: 40px; height: 20px; position: relative; transition: 0.3s;
-    }
-    .toggle-switch.active { background: var(--accent-yellow); }
-    .toggle-knob {
-        width: 16px; height: 16px; background: white; border-radius: 50%;
-        position: absolute; left: 2px; transition: 0.3s;
-    }
-    .toggle-switch.active .toggle-knob { left: 22px; }
-
-    /* --- TASKBAR --- */
-    .taskbar {
+   /* --- NEW NAV --- */
+    .ktmb-nav {
         background-color: #002266;
-        padding: 0;
         display: flex;
         align-items: stretch;
         border-bottom: 1px solid rgba(255,255,255,0.1);
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
-    .taskbar-nav { display: flex; list-style: none; margin: 0; padding: 0; width: 100%; }
-    .taskbar-item { position: relative; flex: 1; text-align: center; }
-    .taskbar-link {
-        display: flex; align-items: center; justify-content: center;
-        padding: 15px 20px; color: rgba(255,255,255,0.9); text-decoration: none;
-        font-weight: 500; transition: all 0.3s; border-bottom: 3px solid transparent;
-        height: 100%; width: 100%;
+    .ktmb-nav a {
+        display: flex; align-items: center; gap: 8px;
+        padding: 14px 28px; color: rgba(255,255,255,0.85);
+        text-decoration: none; font-weight: 500; font-size: 0.95rem;
+        border-bottom: 3px solid transparent; transition: all 0.3s;
     }
-    .taskbar-link:hover { background-color: rgba(255,255,255,0.1); color: var(--white); }
-    .taskbar-link.active {
-        color: var(--accent-yellow); border-bottom-color: var(--accent-yellow);
-        background-color: rgba(255,204,0,0.1);
+    .ktmb-nav a:hover {
+        background-color: rgba(255,255,255,0.1); color: #ffffff;
     }
-    .taskbar-link .icon { margin-right: 8px; font-size: 1.1rem; }
+    .ktmb-nav a.active {
+        color: #FFCC00; border-bottom-color: #FFCC00;
+        background-color: rgba(255,204,0,0.08);
+    }
 
     /* --- MAIN --- */
     main {
@@ -243,40 +194,54 @@
         .action-cell { flex-direction: column; }
         .stats-strip { gap: 10px; }
     }
+
+    /* --- FOOTER --- */
+    .ktmb-footer {
+        background-color: #001133;
+        color: rgba(255, 255, 255, 0.6);
+        text-align: center;
+        padding: 15px 20px;
+        font-size: 0.85rem;
+        border-top: 3px solid #FFCC00;
+        width: 100%;
+    }
 </style>
 
 <body>
 
-<!-- HEADER -->
-<header>
-    <div class="logo-container">
-        <img src="https://www.bernama.com/storage/photos/b2b32fe44095c63a213df09421007c3f64a8454176890"
-             alt="KTMB Logo" class="logo-img">
-        <div class="system-title">KTM <span>eDOIS</span></div>
+<header class="ktmb-header">
+    <div class="ktmb-logo-container">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6d/KTMB_Official_Logo.jpg"
+             alt="KTMB Logo" class="ktmb-logo-img" style="width: 80px; height: 50px; background-color: white; border-radius: 5px; object-fit: contain; border: 2px solid #FFCC00; padding: 2px; margin-right: 15px;">
+        <div class="system-title" style="font-size: 1.5rem; font-weight: bold; color: white; display: inline-block; vertical-align: middle;">KTM <span style="color: #FFCC00;">eDOIS</span></div>
     </div>
-    <div class="simulation-controls">
-        <span>Vendor Status:</span>
-        <span id="status-label" style="font-weight: bold; color: #aaffaa;">ACTIVE</span>
-        <div class="toggle-switch active" id="status-toggle" onclick="toggleVendorStatus()">
-            <div class="toggle-knob"></div>
-        </div>
+    <div class="ktmb-user-info" style="color: white; display: flex; gap: 15px; align-items: center;">
+        <span>{{ auth()->user()->Username }}</span>
+        <form method="POST" action="{{ route('logout') }}" style="display:inline;">
+            @csrf
+            <a href="{{ route('logout') }}"
+               onclick="event.preventDefault(); this.closest('form').submit();"
+               style="color: #FFCC00; text-decoration: none; font-weight: bold; font-size: 0.9rem;">
+                Logout
+            </a>
+        </form>
     </div>
 </header>
 
-<!-- TASKBAR -->
-<nav class="taskbar">
-    <ul class="taskbar-nav">
-        <li class="taskbar-item">
-            <a href="{{ url('/delivery-order') }}" class="taskbar-link">
-                <span class="icon">📋</span> Delivery Order (DO)
-            </a>
-        </li>
-        <li class="taskbar-item">
-            <a href="{{ url('/invoice') }}" class="taskbar-link active">
-                <span class="icon">🧾</span> Invoice
-            </a>
-        </li>
-    </ul>
+<div class="ktmb-subheader" style="background-color: #001133; color: #ccc; padding: 8px 30px; font-size: 0.85rem;">
+    Electronic Delivery Order &amp; Invoice System
+</div>
+
+<nav class="ktmb-nav">
+    <a href="{{ route('vendor.dashboard') }}">
+        🏠 Home
+    </a>
+    <a href="{{ route('delivery.list') }}">
+        📋 Manage Delivery Order
+    </a>
+    <a href="{{ route('invoice.list') }}" class="active">
+        🧾 Manage Invoice
+    </a>
 </nav>
 
 <main>
@@ -496,6 +461,12 @@
         }).catch(() => {});
     }
 </script>
+<!-- FOOTER -->
+<footer class="ktmb-footer">
+    &copy; 2026 Keretapi Tanah Melayu Berhad (KTMB). All rights reserved.
+</footer>
 
+</body>
+</html>
 </body>
 </html>
