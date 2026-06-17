@@ -44,18 +44,22 @@ class LoginRequest extends FormRequest
         }
 
         // Step 3 — If vendor, check external supplier status
-        if ($user->Role === 'vendor') {
-            $externalSupplier = ExternalSupplier::where('SUPPLIERID', $user->Username)->first();
+        // FIX 1: Make role comparison case-insensitive
+        if (strtolower($user->Role) === 'vendor') {
+            
+            // FIX 2: Find the supplier by matching email instead of Username/ID
+            $externalSupplier = ExternalSupplier::where('SUPPLIER_EMAIL_ADD', $user->Email)->first();
 
             if (! $externalSupplier) {
                 RateLimiter::hit($this->throttleKey());
 
                 throw ValidationException::withMessages([
-                    'Username' => 'Vendor not found in supplier system.',
+                    'Username' => 'Vendor account details not found in the external supplier system.',
                 ]);
             }
 
-            if ($externalSupplier->SUPPLIER_CTC_STATUS !== 'active') {
+            // FIX 3: Convert the status to lowercase before comparing
+            if (strtolower($externalSupplier->SUPPLIER_CTC_STATUS) !== 'active') {
                 RateLimiter::hit($this->throttleKey());
 
                 throw ValidationException::withMessages([

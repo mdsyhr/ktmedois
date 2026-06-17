@@ -302,18 +302,18 @@
                     {{ $supplier->Phone ?? '—' }}
                 </div>
             </div>
-            <div class="vendor-info-item">
-                <div class="info-label">Status</div>
-                <div class="info-value">
-                    @if(($supplier->Status ?? '') === 'active')
-                        <span style="color:#2e7d32; font-weight:600;">● Active</span>
-                    @elseif(($supplier->Status ?? '') === 'inactive')
-                        <span style="color:#d32f2f; font-weight:600;">● Inactive</span>
-                    @else
-                        —
-                    @endif
-                </div>
-            </div>
+       <div class="vendor-info-item">
+    <div class="info-label">Status</div>
+    <div class="info-value">
+        @if(strtolower($supplier->Status ?? '') === 'active')
+            <span style="color:#2e7d32; font-weight:600;">● Active</span>
+        @elseif(strtolower($supplier->Status ?? '') === 'inactive')
+            <span style="color:#d32f2f; font-weight:600;">● Inactive</span>
+        @else
+            —
+        @endif
+    </div>
+</div>
         </div>
 
         <!-- STATS CARDS -->
