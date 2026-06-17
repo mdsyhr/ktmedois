@@ -43,27 +43,33 @@ class LoginRequest extends FormRequest
             ]);
         }
 
-        // Step 3 — If vendor, check external supplier status
-        // FIX 1: Make role comparison case-insensitive
+     // Step 3 — If vendor, check external supplier status
         if (strtolower($user->Role) === 'vendor') {
             
-            // FIX 2: Find the supplier by matching email instead of Username/ID
+            // Try finding the external record by Email address (safest link)
             $externalSupplier = ExternalSupplier::where('SUPPLIER_EMAIL_ADD', $user->Email)->first();
+            
+            // If it can't find it by email, try matching by Username
+            if (!$externalSupplier) {
+                $externalSupplier = ExternalSupplier::where('SUPPLIERID', $user->Username)->first();
+            }
 
-            if (! $externalSupplier) {
+            // Error Blocker 1: If the account doesn't exist at all in the external table
+            if (!$externalSupplier) {
                 RateLimiter::hit($this->throttleKey());
-
                 throw ValidationException::withMessages([
-                    'Username' => 'Vendor account details not found in the external supplier system.',
+                    'Username' => "System cannot find an external vendor record for Email: {$user->Email} or Username: {$user->Username}",
                 ]);
             }
 
-            // FIX 3: Convert the status to lowercase before comparing
-            if (strtolower($externalSupplier->SUPPLIER_CTC_STATUS) !== 'active') {
-                RateLimiter::hit($this->throttleKey());
+            // Get the status text and clean it up (lowercase and strip spaces)
+            $currentStatus = trim(strtolower($externalSupplier->SUPPLIER_CTC_STATUS));
 
+            // Error Blocker 2: If the status text inside the database is not exactly 'active'
+            if ($currentStatus !== 'active') {
+                RateLimiter::hit($this->throttleKey());
                 throw ValidationException::withMessages([
-                    'Username' => 'Your vendor account is inactive. Please contact KTMB administrator.',
+                    'Username' => "Access denied. Your external status is '{$externalSupplier->SUPPLIER_CTC_STATUS}'. It must be 'Active' to log in.",
                 ]);
             }
         }
