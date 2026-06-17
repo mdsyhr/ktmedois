@@ -329,7 +329,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="DO_File">Upload DO Document <span class="required">*</span></label>
+                            <label for="DO_File">Upload Delivery Order Document <span class="required">*</span></label>
                             <div class="file-upload-box">
                                 <input type="file" id="DO_File" name="DO_File" accept=".pdf,.jpg,.jpeg,.png"
                                     required>
