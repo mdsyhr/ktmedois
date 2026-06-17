@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KTM eDOIS - Submit Delivery Order</title>
+    <link rel="stylesheet" href="{{ asset('css/ktmb.css') }}">
     <style>
         /* Basic Reset */
         * {
@@ -19,59 +20,32 @@
             padding: 0;
         }
 
-        /* HEADER */
-        .ktmb-header {
-            background: #002266;
-            color: white;
-            padding: 15px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        .ktmb-logo-container {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .ktmb-logo-img {
-            height: 40px;
-            background: white;
-            padding: 5px;
-            border-radius: 4px;
-        }
-
-        .ktmb-system-title {
-            font-size: 1.2rem;
-            font-weight: bold;
-        }
-
-        .ktmb-system-title span {
-            color: #FFCC00;
-        }
-
-        .ktmb-user-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            color: rgba(255, 255, 255, 0.9);
-        }
-
-        .ktmb-user-info a {
-            color: #FFCC00;
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        .ktmb-user-info a:hover {
-            text-decoration: underline;
-        }
+       /* --- NEW NAV --- */
+    .ktmb-nav {
+        background-color: #002266;
+        display: flex;
+        align-items: stretch;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+        
+    }
+    .ktmb-nav a {
+        display: flex; align-items: center; gap: 8px;
+        padding: 14px 28px; color: rgba(255,255,255,0.85);
+        text-decoration: none; font-weight: 500; font-size: 0.95rem;
+        border-bottom: 3px solid transparent; transition: all 0.3s;
+    }
+    .ktmb-nav a:hover {
+        background-color: rgba(255,255,255,0.1); color: #ffffff;
+    }
+    .ktmb-nav a.active {
+        color: #FFCC00; border-bottom-color: #FFCC00;
+        background-color: rgba(255,204,0,0.08);
+    }
 
         /* MAIN CONTENT */
         .content-wrapper {
-            max-width: 800px;
+            
+            width:80%;
             margin: 30px auto;
             padding: 0 20px;
         }
@@ -82,6 +56,7 @@
             border-radius: 10px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
             overflow: hidden;
+            width:1000px
         }
 
         .form-card-header {
@@ -290,26 +265,43 @@
 
 <body>
 
-    <!-- HEADER -->
-    <header class="ktmb-header">
-        <div class="ktmb-logo-container">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6d/KTMB_Official_Logo.jpg" alt="KTMB Logo"
-                class="ktmb-logo-img">
-            <div class="ktmb-system-title">KTM <span>eDOIS</span></div>
-        </div>
-        <div class="ktmb-user-info">
-            <span>{{ auth()->user()->Username }}</span>
-            <form method="POST" action="{{ route('logout') }}" style="display:inline;">
-                @csrf
-                <a href="{{ route('logout') }}"
-                    onclick="event.preventDefault(); this.closest('form').submit();">Logout</a>
-            </form>
-        </div>
-    </header>
+   <header class="ktmb-header">
+    <div class="ktmb-logo-container">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6d/KTMB_Official_Logo.jpg"
+             alt="KTMB Logo" class="ktmb-logo-img" style="width: 80px; height: 50px; background-color: white; border-radius: 5px; object-fit: contain; border: 2px solid #FFCC00; padding: 2px; margin-right: 15px;">
+        <div class="system-title" style="font-size: 1.5rem; font-weight: bold; color: white; display: inline-block; vertical-align: middle;">KTM <span style="color: #FFCC00;">eDOIS</span></div>
+    </div>
+    <div class="ktmb-user-info" style="color: white; display: flex; gap: 15px; align-items: center;">
+        <span>{{ auth()->user()->Username }}</span>
+        <form method="POST" action="{{ route('logout') }}" style="display:inline;">
+            @csrf
+            <a href="{{ route('logout') }}"
+               onclick="event.preventDefault(); this.closest('form').submit();"
+               style="color: #FFCC00; text-decoration: none; font-weight: bold; font-size: 0.9rem;">
+                Logout
+            </a>
+        </form>
+    </div>
+</header>
+
+<div class="ktmb-subheader" style="background-color: #001133; color: #ccc; padding: 8px 30px; font-size: 0.85rem;">
+    Electronic Delivery Order &amp; Invoice System
+</div>
+
+<nav class="ktmb-nav">
+    <a href="{{ route('vendor.dashboard') }}">
+        🏠 Home
+    </a>
+    <a href="{{ route('delivery.list') }}"class="active">
+        📋 Manage Delivery Order
+    </a>
+    <a href="{{ route('invoice.list') }}" >
+        🧾 Manage Invoice
+    </a>
+</nav>
     <main class="content-wrapper">
         <div class="page-header">
-            <a href="{{ route('delivery.list') }}" class="btn-back">← Back to List</a>
-        </div>
+           
 
         <main class="content-wrapper">
             <div class="form-card">
