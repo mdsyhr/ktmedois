@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\VendorRegistryIntegration;
 
 use App\Http\Controllers\Controller;
+use App\Models\Notification;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
@@ -34,12 +35,26 @@ class PasswordResetLinkController extends Controller
         // to send the link, we will examine the response then see the message we
         // need to show to the user. Finally, we'll send out a proper response.
         $status = Password::sendResetLink(
-            $request->only('email')
-        );
+        $request->only('email')
+    );
 
-        return $status == Password::RESET_LINK_SENT
-                    ? back()->with('status', __($status))
-                    : back()->withInput($request->only('email'))
-                        ->withErrors(['email' => __($status)]);
+    if ($status == Password::RESET_LINK_SENT) {
+        $user = \App\Models\User::where('Email', $request->email)->first();
+
+        if ($user) {
+            \App\Models\Notification::create([
+                'User_ID'    => $user->User_ID,
+                'Type'       => 'Password Reset',
+                'Content'    => 'A password reset link was sent to ' . $user->Email,
+                'Status'     => 'Sent',
+                'Created_At' => now(),
+            ]);
+        }
+
+        return back()->with('status', __($status));
+    }
+
+    return back()->withInput($request->only('email'))
+                ->withErrors(['email' => __($status)]);
     }
 }
