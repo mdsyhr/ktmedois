@@ -297,20 +297,21 @@
                                 <a href="{{ route('delivery.show', $item->DO_ID) }}"
                                     class="btn-action btn-view">View</a>
 
-                                @if ($item->Status === 'Approved')
-                                    <a href="#" class="btn-action btn-invoice">Create Invoice</a>
-                                @elseif ($item->Status === 'Submitted' || $item->Status === 'Rejected')
-                                    <form action="{{ route('delivery.destroy', $item->DO_ID) }}" method="POST"
-                                        style="display: inline;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn-action btn-delete"
-                                            onclick="return confirm('Are you sure you want to delete this?');">Delete</button>
-                                    </form>
-                                @elseif ($item->Status === 'Under Review')
-                                @else
-                                    <a href="#" class="btn-action btn-invoice">Create Invoice</a>
-                                @endif
+                               @if ($item->Status === 'Approved')
+    <a href="{{ route('invoice.list') }}" class="btn-action btn-invoice">Create Invoice</a>
+@elseif ($item->Status === 'Submitted' || $item->Status === 'Rejected')
+    <form action="{{ route('delivery.destroy', $item->DO_ID) }}" method="POST"
+        style="display: inline;">
+        @csrf
+        @method('DELETE')
+        <button type="submit" class="btn-action btn-delete"
+            onclick="return confirm('Are you sure you want to delete this?');">Delete</button>
+    </form>
+@elseif ($item->Status === 'Under Review')
+    {{-- Optional: Add styling or text for Under Review status here --}}
+@else
+    <a href="{{ route('invoice.list') }}" class="btn-action btn-invoice">Create Invoice</a>
+@endif
                             </td>
                         </tr>
                     @empty

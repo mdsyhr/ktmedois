@@ -145,10 +145,11 @@ class DeliveryOrderController extends Controller
             abort(404, 'File content is empty or not found');
         }
 
-        if (is_resource($content)) {
-            $content = stream_get_contents($content);
-            fclose($content);
-        }
+       if (is_resource($content)) {
+    $resource = $content;
+    $content = stream_get_contents($resource);
+    fclose($resource); // ✅ Correctly closes the resource stream
+}
 
         $finfo = new \finfo(FILEINFO_MIME_TYPE);
         $mimeType = $finfo->buffer($content) ?: 'application/octet-stream';

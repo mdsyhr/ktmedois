@@ -338,15 +338,29 @@
                             <div class="action-cell" style="justify-content:center;">
                                 {{-- View DO Document button --}}
                                 @if($do->DO_Link)
-                                    <button class="btn btn-outline"
-                                        onclick="viewDocument('{{ Storage::url($do->DO_Link) }}', 'DO Document — {{ $do->DO_Number }}', '{{ pathinfo($do->DO_Link, PATHINFO_EXTENSION) }}')">
-                                        👁 View DO
-                                    </button>
-                                @else
-                                    <button class="btn btn-outline" disabled style="opacity:0.4; cursor:not-allowed;" title="No DO document uploaded">
-                                        👁 View DO
-                                    </button>
-                                @endif
+    @php
+        // Guess the extension for the JavaScript modal renderer from the binary header
+        $binarySnippet = substr($do->DO_Link, 0, 4);
+        $extension = 'png'; // default fallback
+        
+        if (str_contains($binarySnippet, '%PDF')) {
+            $extension = 'pdf';
+        } elseif (str_contains($binarySnippet, 'JFIF') || str_contains($binarySnippet, '\xff\xd8')) {
+            $extension = 'jpg';
+        } elseif (str_contains($binarySnippet, 'PNG')) {
+            $extension = 'png';
+        }
+    @endphp
+
+    <button class="btn btn-outline"
+        onclick="viewDocument('{{ route('delivery.file', ['id' => $do->DO_ID, 'type' => 'do']) }}', 'DO Document — {{ $do->DO_Number }}', '{{ $extension }}')">
+        👁 View DO
+    </button>
+@else
+    <button class="btn btn-outline" disabled style="opacity:0.4; cursor:not-allowed;" title="No DO document uploaded">
+        👁 View DO
+    </button>
+@endif
 
                                 {{-- Make Claim button — disabled if claim already exists --}}
                                 @if(!$claimStatus)
