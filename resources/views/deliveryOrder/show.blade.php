@@ -30,7 +30,7 @@
 
         .btn-cancel {
             background: #f5f5f5;
-            color: #555;
+            color: #333;
             border: 1px solid #ddd;
         }
 
@@ -256,12 +256,8 @@
 
     <main class="content-container">
 
-        <!-- Standard wide-styled layout wrapper -->
         <div class="ktmb-card-wide">
-
-            <div class="">
                 <a href="{{ route('delivery.list') }}" class="btn btn-cancel">&lt; back to list</a>
-            </div>
             <div class="page-header">
                 <h2>Delivery Order Details</h2>
             </div>

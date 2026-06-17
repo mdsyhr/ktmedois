@@ -26,7 +26,7 @@
         display: flex;
         align-items: stretch;
         border-bottom: 1px solid rgba(255,255,255,0.1);
-        
+
     }
     .ktmb-nav a {
         display: flex; align-items: center; gap: 8px;
@@ -44,7 +44,7 @@
 
         /* MAIN CONTENT */
         .content-wrapper {
-            
+
             width:80%;
             margin: 30px auto;
             padding: 0 20px;
@@ -203,7 +203,7 @@
 
         .btn-cancel {
             background: #f5f5f5;
-            color: #555;
+            color: #333;
             border: 1px solid #ddd;
         }
 
@@ -301,7 +301,7 @@
 </nav>
     <main class="content-wrapper">
         <div class="page-header">
-           
+
 
         <main class="content-wrapper">
             <div class="form-card">
