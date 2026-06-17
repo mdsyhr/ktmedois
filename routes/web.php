@@ -47,6 +47,7 @@ Route::middleware('auth')->group(function () {
 
 // Invoice Routes
 Route::post('/invoice/extract-data', [InvoiceController::class, 'extractData']);
+Route::get('/invoicelist', [InvoiceController::class, 'index'])->name('invoice.list');
 Route::get('/invoice', [InvoiceController::class, 'index']);
 Route::get('/invoice/create/{doId}', [InvoiceController::class, 'create']);
 Route::post('/invoice/store', [InvoiceController::class, 'store']);

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>KTM eDOIS - Submit Invoice Claim</title>
+    <link rel="stylesheet" href="{{ asset('css/ktmb.css') }}">
 </head>
 
 {{--
@@ -32,34 +33,26 @@
 
     body { background-color: var(--light-gray); color: var(--text-dark); min-height: 100vh; display: flex; flex-direction: column; }
 
-    /* --- HEADER --- */
-    header {
-        background-color: var(--primary-blue); color: var(--white);
-        padding: 15px 30px; display: flex; justify-content: space-between; align-items: center;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+   /* --- NEW NAV --- */
+    .ktmb-nav {
+        background-color: #002266;
+        display: flex;
+        align-items: stretch;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
     }
-    .logo-container { display: flex; align-items: center; gap: 15px; }
-    .logo-img { width: 80px; height: 50px; background-color: var(--white); border-radius: 5px; object-fit: contain; border: 2px solid var(--accent-yellow); padding: 2px; }
-    .system-title { font-size: 1.5rem; font-weight: bold; color: var(--white); }
-    .system-title span { color: var(--accent-yellow); }
-
-    .simulation-controls {
-        background: rgba(255,255,255,0.2); padding: 5px 15px; border-radius: 20px;
-        font-size: 0.85rem; display: flex; align-items: center; gap: 10px; color: var(--white);
+    .ktmb-nav a {
+        display: flex; align-items: center; gap: 8px;
+        padding: 14px 28px; color: rgba(255,255,255,0.85);
+        text-decoration: none; font-weight: 500; font-size: 0.95rem;
+        border-bottom: 3px solid transparent; transition: all 0.3s;
     }
-    .toggle-switch { cursor: pointer; background: #333; border-radius: 10px; padding: 2px; width: 40px; height: 20px; position: relative; transition: 0.3s; }
-    .toggle-switch.active { background: var(--accent-yellow); }
-    .toggle-knob { width: 16px; height: 16px; background: white; border-radius: 50%; position: absolute; left: 2px; transition: 0.3s; }
-    .toggle-switch.active .toggle-knob { left: 22px; }
-
-    /* --- TASKBAR --- */
-    .taskbar { background-color: #002266; padding: 0; display: flex; align-items: stretch; border-bottom: 1px solid rgba(255,255,255,0.1); box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-    .taskbar-nav { display: flex; list-style: none; margin: 0; padding: 0; width: 100%; }
-    .taskbar-item { position: relative; flex: 1; text-align: center; }
-    .taskbar-link { display: flex; align-items: center; justify-content: center; padding: 15px 20px; color: rgba(255,255,255,0.9); text-decoration: none; font-weight: 500; transition: all 0.3s; border-bottom: 3px solid transparent; height: 100%; width: 100%; }
-    .taskbar-link:hover { background-color: rgba(255,255,255,0.1); color: var(--white); }
-    .taskbar-link.active { color: var(--accent-yellow); border-bottom-color: var(--accent-yellow); background-color: rgba(255,204,0,0.1); }
-    .taskbar-link .icon { margin-right: 8px; font-size: 1.1rem; }
+    .ktmb-nav a:hover {
+        background-color: rgba(255,255,255,0.1); color: #ffffff;
+    }
+    .ktmb-nav a.active {
+        color: #FFCC00; border-bottom-color: #FFCC00;
+        background-color: rgba(255,204,0,0.08);
+    }
 
     /* --- MAIN --- */
     main { flex: 1; padding: 40px; display: flex; justify-content: center; align-items: flex-start; }
@@ -199,51 +192,60 @@
         .form-actions { flex-direction: column; }
         .form-actions .btn { width: 100%; justify-content: center; }
     }
+
+    /* --- FOOTER --- */
+    .ktmb-footer {
+        background-color: #001133;
+        color: rgba(255, 255, 255, 0.6);
+        text-align: center;
+        padding: 15px 20px;
+        font-size: 0.85rem;
+        border-top: 3px solid #FFCC00;
+        width: 100%;
+    }
 </style>
 
 <body>
 
-<!-- HEADER -->
-<header>
-    <div class="logo-container">
-        <img src="https://www.bernama.com/storage/photos/b2b32fe44095c63a213df09421007c3f64a8454176890"
-             alt="KTMB Logo" class="logo-img">
-        <div class="system-title">KTM <span>eDOIS</span></div>
+<header class="ktmb-header">
+    <div class="ktmb-logo-container">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6d/KTMB_Official_Logo.jpg"
+             alt="KTMB Logo" class="ktmb-logo-img" style="width: 80px; height: 50px; background-color: white; border-radius: 5px; object-fit: contain; border: 2px solid #FFCC00; padding: 2px; margin-right: 15px;">
+        <div class="system-title" style="font-size: 1.5rem; font-weight: bold; color: white; display: inline-block; vertical-align: middle;">KTM <span style="color: #FFCC00;">eDOIS</span></div>
     </div>
-    <div class="simulation-controls">
-        <span>Vendor Status:</span>
-        <span id="status-label" style="font-weight: bold; color: #aaffaa;">ACTIVE</span>
-        <div class="toggle-switch active" id="status-toggle" onclick="toggleVendorStatus()">
-            <div class="toggle-knob"></div>
-        </div>
+    <div class="ktmb-user-info" style="color: white; display: flex; gap: 15px; align-items: center;">
+        <span>{{ auth()->user()->Username }}</span>
+        <form method="POST" action="{{ route('logout') }}" style="display:inline;">
+            @csrf
+            <a href="{{ route('logout') }}"
+               onclick="event.preventDefault(); this.closest('form').submit();"
+               style="color: #FFCC00; text-decoration: none; font-weight: bold; font-size: 0.9rem;">
+                Logout
+            </a>
+        </form>
     </div>
 </header>
 
-<!-- TASKBAR -->
-<nav class="taskbar">
-    <ul class="taskbar-nav">
-        <li class="taskbar-item">
-            <a href="{{ url('/delivery-order') }}" class="taskbar-link">
-                <span class="icon">📋</span> Delivery Order (DO)
-            </a>
-        </li>
-        <li class="taskbar-item">
-            <a href="{{ url('/invoice') }}" class="taskbar-link active">
-                <span class="icon">🧾</span> Invoice
-            </a>
-        </li>
-    </ul>
+<div class="ktmb-subheader" style="background-color: #001133; color: #ccc; padding: 8px 30px; font-size: 0.85rem;">
+    Electronic Delivery Order &amp; Invoice System
+</div>
+
+<nav class="ktmb-nav">
+    <a href="{{ route('vendor.dashboard') }}">
+        🏠 Home
+    </a>
+    <a href="{{ route('delivery.list') }}">
+        📋 Manage Delivery Order
+    </a>
+    <a href="{{ route('invoice.list') }}" class="active">
+        🧾 Manage Invoice
+    </a>
 </nav>
 
 <main>
 <div class="container">
 
-    <!-- Breadcrumb -->
-    <nav class="breadcrumb">
-        <a href="{{ url('/invoice') }}">Invoice Claims</a>
-        <span class="sep">›</span>
-        <span>Submit Claim — {{ $do->DO_Number }}</span>
-    </nav>
+
 
     <h2>Submit Invoice Claim</h2>
 
@@ -343,13 +345,12 @@
     <div id="invoice-form-container">
         <h3>Invoice Details</h3>
 
-        <!-- AI Extraction Banner Component -->
         <div class="form-group" style="background: #f0f4ff; border: 2px dashed var(--primary-blue); padding: 20px; border-radius: 6px; text-align: center; margin-bottom: 25px;">
             <label for="invoice_pdf" style="color: var(--primary-blue); display: block; font-weight: bold; margin-bottom: 5px; cursor: pointer;">
                 ⚡ Fast Auto-Fill via Invoice PDF Upload
             </label>
             <input type="file" id="invoice_pdf" accept=".pdf,.png,.jpg,.jpeg" onchange="extractInvoiceData(this)" style="margin-top: 5px;">
-            <span class="input-hint">Upload your invoice file to automatically parse items, descriptions, quantities, and prices.</span>
+            <span class="input-hint">Upload your invoice file to automatically upload items, descriptions, quantities, and prices.</span>
         </div>
 
         <form id="invoiceForm" onsubmit="handleInvoiceSubmission(event)">
@@ -368,17 +369,8 @@
                        oninput="logAudit('INPUT','Typing invoice number')">
             </div>
 
-            {{-- Vendor Manual Item Input Toggle --}}
-            <div class="form-group" style="margin-top: 25px; margin-bottom: 25px;">
-                <div class="checkbox-row" style="background: #fff8e1; padding: 12px; border: 1px solid #ffe082; border-radius: 6px;">
-                    <input type="checkbox" id="manual_items_toggle" name="manual_items_toggle" onchange="toggleManualItems()">
-                    <label for="manual_items_toggle" style="color: #b78103; font-weight: 700;">✏️ Manually fill / adjust line items for this invoice claim</label>
-                </div>
-                <span class="input-hint">Enable this option if you need to update quantities, unit pricing, or alter structured fields extracted from the PDF or system baseline.</span>
-            </div>
-
-            {{-- Editable dynamic items table (Shown when manual items toggle is checked) --}}
-            <div id="manual-items-container" style="display: none; border: 1px dashed var(--primary-blue); padding: 20px; border-radius: 6px; background: #fafafa; margin-bottom: 24px;">
+            {{-- Custom Invoice Line Items Work Space (Always Displayed) --}}
+            <div id="manual-items-container" style="display: block; border: 1px dashed var(--primary-blue); padding: 20px; border-radius: 6px; background: #fafafa; margin-bottom: 24px; margin-top: 25px;">
                 <h4 style="font-size: 0.98rem; margin-bottom: 12px; color: var(--primary-blue);">Custom Invoice Line Items</h4>
                 <table class="editable-item-table">
                     <thead>
@@ -402,7 +394,7 @@
                 <div class="checkbox-row">
                     <input type="checkbox" id="is_late" name="is_late" value="true"
                            onchange="recalculate()">
-                    <label for="is_late">Apply Late Delivery Penalty (1% of subtotal)</label>
+                    <label for="is_late">Late Delivery Penalty</label>
                 </div>
             </div>
 
@@ -441,7 +433,7 @@
                 </div>
                 <div class="summary-row" id="penalty-row" style="display:none;">
                     <span class="label">Late Delivery Penalty (1%)</span>
-                    <span class="value" id="summary-penalty" style="color:var(--error-red);">+ RM 0.00</span>
+                    <span class="value" id="summary-penalty" style="color:var(--error-red);">− RM 0.00</span>
                 </div>
                 <div class="summary-row">
                     <span class="label">Credit Note / Discount</span>
@@ -519,12 +511,23 @@
         ITEMS = JSON.parse(hiddenItemsInput ? hiddenItemsInput.value : '[]');
         TAX_RATE = taxRateInput ? parseFloat(taxRateInput.value) : 0.06;
 
+        // Automatically populate editable rows layout instantly on load
+        const tbody = document.getElementById('editable-items-tbody');
+        if (tbody && tbody.children.length === 0) {
+            ITEMS.forEach(item => {
+                const desc = item.Item_Desc || item.item_desc || '';
+                const qty = item.Quantity || item.quantity || 0;
+                const price = item.Unit_Price || item.unit_price || 0;
+                addManualRow(desc, qty, price);
+            });
+        }
+
         // Trigger execution configuration baseline
         recalculate();
         logAudit('NAVIGATE', `Opened unified invoice form for DO: {{ $do->DO_Number }}`);
     });
 
-    // ─── NEW: AJAX Invoice Document Parser ──────────────────────────────────────
+    // ─── AJAX Invoice Document Parser ──────────────────────────────────────
     function extractInvoiceData(input) {
         const file = input.files[0];
         if (!file) return;
@@ -580,19 +583,16 @@
                     });
                 }
 
-                // 4. If manual editing is checked, sync layout modification grid immediately
-                const toggle = document.getElementById('manual_items_toggle');
-                if (toggle && toggle.checked) {
-                    const editableTbody = document.getElementById('editable-items-tbody');
-                    if (editableTbody) editableTbody.innerHTML = '';
-                    ITEMS.forEach(item => {
-                        addManualRow(
-                            item.Item_Desc || item.item_desc || '',
-                            item.Quantity || item.quantity || 0,
-                            item.Unit_Price || item.unit_price || 0
-                        );
-                    });
-                }
+                // 4. Update row layouts modification workspace grid immediately
+                const editableTbody = document.getElementById('editable-items-tbody');
+                if (editableTbody) editableTbody.innerHTML = '';
+                ITEMS.forEach(item => {
+                    addManualRow(
+                        item.Item_Desc || item.item_desc || '',
+                        item.Quantity || item.quantity || 0,
+                        item.Unit_Price || item.unit_price || 0
+                    );
+                });
 
                 recalculate();
                 logAudit('AI_EXTRACTION', `Successfully parsed data layouts out of: ${file.name}`);
@@ -612,30 +612,6 @@
             console.error(err);
             alert('An unexpected error occurred during document parsing parameters processing.');
         });
-    }
-
-    // ─── Toggle Manual Entry Grid Visibility & Sync Active State Baseline ────
-    function toggleManualItems() {
-        const toggle = document.getElementById('manual_items_toggle');
-        const container = document.getElementById('manual-items-container');
-        const tbody = document.getElementById('editable-items-tbody');
-
-        if (toggle && toggle.checked) {
-            container.style.display = 'block';
-            
-            // Populate grid workspace seamlessly using active data properties tracking scope
-            if (tbody && tbody.children.length === 0) {
-                ITEMS.forEach(item => {
-                    const desc = item.Item_Desc || item.item_desc || '';
-                    const qty = item.Quantity || item.quantity || 0;
-                    const price = item.Unit_Price || item.unit_price || 0;
-                    addManualRow(desc, qty, price);
-                });
-            }
-        } else if (container) {
-            container.style.display = 'none';
-        }
-        recalculate();
     }
 
     // ─── Append New Editable Input Row ───────────────────────────────────────
@@ -677,33 +653,22 @@
     // ─── Recalculate summary metrics dynamically ──────────────────────────────
     function recalculate() {
         let dynamicSubtotal = 0;
-        const toggle = document.getElementById('manual_items_toggle');
-        const isManualMode = toggle ? toggle.checked : false;
 
-        if (isManualMode) {
-            // Scrape raw inputs out of the active data modification grid map
-            document.querySelectorAll('.item-row').forEach(row => {
-                const qtyInput = row.querySelector('.item-qty');
-                const priceInput = row.querySelector('.item-price');
-                const lineTotalCell = row.querySelector('.row-total');
+        // Scrape inputs from custom item rows layout modification grid map
+        document.querySelectorAll('.item-row').forEach(row => {
+            const qtyInput = row.querySelector('.item-qty');
+            const priceInput = row.querySelector('.item-price');
+            const lineTotalCell = row.querySelector('.row-total');
 
-                const qty = parseFloat(qtyInput ? qtyInput.value : 0) || 0;
-                const price = parseFloat(priceInput ? priceInput.value : 0) || 0;
-                const lineTotal = qty * price;
+            const qty = parseFloat(qtyInput ? qtyInput.value : 0) || 0;
+            const price = parseFloat(priceInput ? priceInput.value : 0) || 0;
+            const lineTotal = qty * price;
 
-                if (lineTotalCell) {
-                    lineTotalCell.textContent = 'RM ' + lineTotal.toFixed(2);
-                }
-                dynamicSubtotal += lineTotal;
-            });
-        } else {
-            // Process default context from properties configuration matrix tracking scope
-            dynamicSubtotal = ITEMS.reduce((sum, i) => {
-                const qty = parseFloat(i.Quantity || i.quantity) || 0;
-                const price = parseFloat(i.Unit_Price || i.unit_price) || 0;
-                return sum + (qty * price);
-            }, 0);
-        }
+            if (lineTotalCell) {
+                lineTotalCell.textContent = 'RM ' + lineTotal.toFixed(2);
+            }
+            dynamicSubtotal += lineTotal;
+        });
 
         const creditNoteInput = document.getElementById('credit_note');
         const creditNote = creditNoteInput ? parseFloat(creditNoteInput.value) || 0 : 0;
@@ -713,11 +678,12 @@
         
         const tax = dynamicSubtotal * TAX_RATE;
         const penalty = isLate ? (dynamicSubtotal * 0.01) : 0;
-        const total = (dynamicSubtotal + tax + penalty) - creditNote;
+        
+        const total = (dynamicSubtotal + tax) - penalty - creditNote;
 
         if (document.getElementById('summary-base')) document.getElementById('summary-base').textContent = 'RM ' + dynamicSubtotal.toFixed(2);
         if (document.getElementById('summary-tax')) document.getElementById('summary-tax').textContent = 'RM ' + tax.toFixed(2);
-        if (document.getElementById('summary-penalty')) document.getElementById('summary-penalty').textContent = '+ RM ' + penalty.toFixed(2);
+        if (document.getElementById('summary-penalty')) document.getElementById('summary-penalty').textContent = '− RM ' + penalty.toFixed(2);
         if (document.getElementById('summary-discount')) document.getElementById('summary-discount').textContent = '− RM ' + creditNote.toFixed(2);
         if (document.getElementById('summary-total')) document.getElementById('summary-total').textContent = 'RM ' + total.toFixed(2);
 
@@ -751,12 +717,10 @@
         const creditNoteEl = document.getElementById('credit_note');
         const discountReasonEl = document.getElementById('discount_reason');
         const doIdEl = document.getElementById('do_id');
-        const toggle = document.getElementById('manual_items_toggle');
 
         const invNum = invNumEl ? invNumEl.value.trim() : '';
         const creditNote = creditNoteEl ? parseFloat(creditNoteEl.value) || 0 : 0;
         const discountReason = discountReasonEl ? discountReasonEl.value.trim() : '';
-        const isManualMode = toggle ? toggle.checked : false;
 
         if (!invNum) { 
             alert('Please enter an Invoice Number.'); 
@@ -774,26 +738,22 @@
         if (discountReasonEl) discountReasonEl.style.borderColor = '';
 
         let finalItemsArray = [];
-        if (isManualMode) {
-            const rowElements = document.querySelectorAll('.item-row');
-            rowElements.forEach(row => {
-                const descVal = row.querySelector('.item-desc').value.trim();
-                const qtyVal = parseFloat(row.querySelector('.item-qty').value) || 0;
-                const priceVal = parseFloat(row.querySelector('.item-price').value) || 0;
-                
-                finalItemsArray.push({
-                    Item_Desc: descVal || 'Custom Vendor Line Item',
-                    Quantity: qtyVal,
-                    Unit_Price: priceVal
-                });
+        const rowElements = document.querySelectorAll('.item-row');
+        rowElements.forEach(row => {
+            const descVal = row.querySelector('.item-desc').value.trim();
+            const qtyVal = parseFloat(row.querySelector('.item-qty').value) || 0;
+            const priceVal = parseFloat(row.querySelector('.item-price').value) || 0;
+            
+            finalItemsArray.push({
+                Item_Desc: descVal || 'Custom Vendor Line Item',
+                Quantity: qtyVal,
+                Unit_Price: priceVal
             });
+        });
 
-            if (finalItemsArray.length === 0) {
-                alert('Please add at least one line item row or uncheck the manual option.');
-                return;
-            }
-        } else {
-            finalItemsArray = ITEMS;
+        if (finalItemsArray.length === 0) {
+            alert('Please add at least one line item row.');
+            return;
         }
 
         const formContainer = document.getElementById('invoice-form-container');
@@ -932,6 +892,10 @@
         });
     }
 </script>
+
+<footer class="ktmb-footer">
+    &copy; 2026 Keretapi Tanah Melayu Berhad (KTMB). All rights reserved.
+</footer>
 
 </body>
 </html>

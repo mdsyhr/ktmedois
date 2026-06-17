@@ -250,7 +250,7 @@
         <a href="{{ route('delivery.list') }}">
             📋 Manage Delivery Order
         </a>
-        <a href="#">
+        <a href="{{ route('invoice.list') }}">
             🧾 Manage Invoice
         </a>
     </nav>
