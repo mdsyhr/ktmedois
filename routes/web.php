@@ -19,8 +19,8 @@ Route::get('/vendor/dashboard', function () {
     $pendingDO = $supplier ? \App\Models\DeliveryOrder::where('Supplier_ID', $supplier->Supplier_ID)
         ->where('Status', 'Pending')->count() : 0;
 
-    $totalInvoice = $supplier ? \App\Models\Invoice::whereHas('deliveryOrder', function($q) use ($supplier) {
-    $q->where('Supplier_ID', $supplier->Supplier_ID);
+    $totalInvoice = $supplier ? \App\Models\Invoice::whereHas('deliveryOrder', function ($q) use ($supplier) {
+        $q->where('Supplier_ID', $supplier->Supplier_ID);
     })->count() : 0;
 
     $doStatuses = $supplier ? \App\Models\DeliveryOrder::where('Supplier_ID', $supplier->Supplier_ID)
@@ -29,7 +29,11 @@ Route::get('/vendor/dashboard', function () {
         ->pluck('count', 'Status') : collect();
 
     return view('usermanagement.vendor.Vendor_DashboardView', compact(
-        'supplier', 'totalDO', 'pendingDO', 'totalInvoice', 'doStatuses'
+        'supplier',
+        'totalDO',
+        'pendingDO',
+        'totalInvoice',
+        'doStatuses'
     ));
 })->middleware(['auth'])->name('vendor.dashboard');
 

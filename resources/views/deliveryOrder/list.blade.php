@@ -16,26 +16,37 @@
             padding: 0;
         }
 
-       /* --- NEW NAV --- */
-    .ktmb-nav {
-        background-color: #002266;
-        display: flex;
-        align-items: stretch;
-        border-bottom: 1px solid rgba(255,255,255,0.1);
-    }
-    .ktmb-nav a {
-        display: flex; align-items: center; gap: 8px;
-        padding: 14px 28px; color: rgba(255,255,255,0.85);
-        text-decoration: none; font-weight: 500; font-size: 0.95rem;
-        border-bottom: 3px solid transparent; transition: all 0.3s;
-    }
-    .ktmb-nav a:hover {
-        background-color: rgba(255,255,255,0.1); color: #ffffff;
-    }
-    .ktmb-nav a.active {
-        color: #FFCC00; border-bottom-color: #FFCC00;
-        background-color: rgba(255,204,0,0.08);
-    }
+        /* --- NEW NAV --- */
+        .ktmb-nav {
+            background-color: #002266;
+            display: flex;
+            align-items: stretch;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .ktmb-nav a {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 28px;
+            color: rgba(255, 255, 255, 0.85);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .ktmb-nav a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+        }
+
+        .ktmb-nav a.active {
+            color: #FFCC00;
+            border-bottom-color: #FFCC00;
+            background-color: rgba(255, 204, 0, 0.08);
+        }
 
         /* MAIN CONTENT CONTAINER */
         .content-container {
@@ -199,45 +210,42 @@
 
 <body>
 
-<header class="ktmb-header">
-    <div class="ktmb-logo-container">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6d/KTMB_Official_Logo.jpg"
-             alt="KTMB Logo" class="ktmb-logo-img">
-        <div class="ktmb-system-title">KTM <span>eDOIS</span></div>
-    </div>
-    <div class="ktmb-user-info">
-        <span>{{ auth()->user()->Username }}</span>
-        <form method="POST" action="{{ route('logout') }}" style="display:inline;">
-            @csrf
-            <a href="{{ route('logout') }}"
-               onclick="event.preventDefault(); this.closest('form').submit();">
-                Logout
-            </a>
-        </form>
-    </div>
-</header>
+    <header class="ktmb-header">
+        <div class="ktmb-logo-container">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6d/KTMB_Official_Logo.jpg" alt="KTMB Logo"
+                class="ktmb-logo-img">
+            <div class="ktmb-system-title">KTM <span>eDOIS</span></div>
+        </div>
+        <div class="ktmb-user-info">
+            <span>{{ auth()->user()->Username }}</span>
+            <form method="POST" action="{{ route('logout') }}" style="display:inline;">
+                @csrf
+                <a href="{{ route('logout') }}" onclick="event.preventDefault(); this.closest('form').submit();">
+                    Logout
+                </a>
+            </form>
+        </div>
+    </header>
 
-<div class="ktmb-subheader">
-    Electronic Delivery Order &amp; Invoice System
-</div>
+    <div class="ktmb-subheader">
+        Electronic Delivery Order &amp; Invoice System
+    </div>
 
-<nav class="ktmb-nav">
-    <a href="{{ route('vendor.dashboard') }}">
-        🏠 Home
-    </a>
-    <a href="{{ route('delivery.list') }}" class="active">
-        📋 Manage Delivery Order
-    </a>
-    <a href="{{ route('invoice.list') }}">
-        🧾 Manage Invoice
-    </a>
-</nav>
+    <nav class="ktmb-nav">
+        <a href="{{ route('vendor.dashboard') }}">
+            🏠 Home
+        </a>
+        <a href="{{ route('delivery.list') }}" class="active">
+            📋 Manage Delivery Order
+        </a>
+        <a href="{{ route('invoice.list') }}">
+            🧾 Manage Invoice
+        </a>
+    </nav>
 
     <main class="content-container">
-        
-        <!-- Standard wide-styled layout wrapper -->
+
         <div class="ktmb-card-wide">
-            
             <div class="page-header">
                 <h2>Delivery Orders</h2>
                 <a href="{{ route('delivery.create') }}" class="btn-primary">+ Submit New DO</a>
@@ -278,7 +286,8 @@
                                         class="btn-action btn-view">View</a>
 
                                     @if ($item->Status === 'Approved')
-                                        <a href="{{ route('invoice.list') }}" class="btn-action btn-invoice">Create Invoice</a>
+                                        <a href="{{ route('invoice.list') }}" class="btn-action btn-invoice">Create
+                                            Invoice</a>
                                     @elseif ($item->Status === 'Submitted' || $item->Status === 'Rejected')
                                         <form action="{{ route('delivery.destroy', $item->DO_ID) }}" method="POST"
                                             style="display: inline;">
@@ -288,9 +297,9 @@
                                                 onclick="return confirm('Are you sure you want to delete this?');">Delete</button>
                                         </form>
                                     @elseif ($item->Status === 'Under Review')
-                                        {{-- Optional: Add styling or text for Under Review status here --}}
                                     @else
-                                        <a href="{{ route('invoice.list') }}" class="btn-action btn-invoice">Create Invoice</a>
+                                        <a href="{{ route('invoice.list') }}" class="btn-action btn-invoice">Create
+                                            Invoice</a>
                                     @endif
                                 </td>
                             </tr>
@@ -304,7 +313,7 @@
                     </tbody>
                 </table>
             </div>
-            
+
         </div>
 
     </main>
@@ -316,4 +325,5 @@
     @endif
 
 </body>
+
 </html>
