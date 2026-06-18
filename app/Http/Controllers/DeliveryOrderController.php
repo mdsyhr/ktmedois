@@ -90,20 +90,23 @@ class DeliveryOrderController extends Controller
             'Cust_ID'   => 'required|exists:customers,Cust_ID',
         ]);
 
-        $doFileContent = $request->file('DO_File')->get();
-        $poFileContent = $request->file('PO_File')->get();
-        date_default_timezone_set('Asia/Kuala_Lumpur');
+      $doFileBinary = file_get_contents($request->file('DO_File')->getRealPath());
+$poFileBinary = file_get_contents($request->file('PO_File')->getRealPath());
+date_default_timezone_set('Asia/Kuala_Lumpur');
 
         DeliveryOrder::create([
-            'Supplier_ID' => $supplierId,
-            'Cust_ID'     => $validated['Cust_ID'],
-            'DO_Number' => 'DO-' . date('ymdHis'),
-            'PO_Number'   => $validated['PO_Number'],
-            'DO_Link'      => $doFileContent,
-            'Proof_Link'     => $poFileContent,
-            'Status'      => 'Submitted',
-            'Created_Date' => now(),
-        ]);
+    'Supplier_ID'  => $supplierId,
+    'Cust_ID'      => $validated['Cust_ID'],
+    'DO_Number'    => 'DO-' . date('ymdHis'),
+    'PO_Number'    => $validated['PO_Number'],
+    
+    // Pass the binary file data directly here
+    'DO_Link'      => $doFileBinary, 
+    'Proof_Link'   => $poFileBinary,
+    
+    'Status'       => 'Submitted',
+    'Created_Date' => now(),
+]);
 
         $affectedRecord = sprintf(
             "[DeliveryOrder] supplier %s create %s",

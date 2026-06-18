@@ -145,7 +145,7 @@ class InvoiceController extends Controller
             'Invoice_Num' => $request->input('invoice_num'),
             'Description' => $request->input('description', 'Invoice Claim Submission via eDOIS'),
             'DO_ID'       => $request->input('do_id'),
-            'Issue_Date'  => Carbon::now()->toDateString(),
+            'Issue_Date'  => Carbon::now('Asia/Kuala_Lumpur')->toDateString(),
             'Subtotal'    => $subtotal,
             'Tax'         => $tax,
             'Credit_Note' => $creditNote,
@@ -485,18 +485,17 @@ class InvoiceController extends Controller
         return response()->json(['logged' => true]);
     }
 
-    // Private: write to audit_log table
     private function auditLog(string $action, string $module, string $description): void
-    {
-        try {
-            AuditLog::create([
-                'User_ID'         => Auth::id() ?? 1, 
-                'Action'          => strtoupper($action),
-                'Affected_Record' => "[{$module}] {$description}",
-                'Timestamp'       => Carbon::now(),
-            ]);
-        } catch (\Exception $e) {
-            Log::warning('Audit log write failed: ' . $e->getMessage());
-        }
+{
+    try {
+        AuditLog::create([
+            'User_ID'         => Auth::user()?->User_ID,
+            'Action'          => strtoupper($action),
+            'Affected_Record' => "[{$module}] {$description}",
+            'Timestamp'       => Carbon::now('Asia/Kuala_Lumpur'),
+        ]);
+    } catch (\Exception $e) {
+        Log::error('Audit log write failed: ' . $e->getMessage());
     }
+}
 }

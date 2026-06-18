@@ -312,29 +312,33 @@
         @endif
 
         {{-- DO Document --}}
-        @if($do->DO_Link)
-            <div style="margin-top: 14px;">
-                <h4 style="margin-bottom: 8px;">📄 DO Document</h4>
-                @php
-                    $doExt = pathinfo($do->DO_Link, PATHINFO_EXTENSION);
-                    $doUrl = Storage::url($do->DO_Link);
-                    $doIcon = $doExt === 'pdf' ? '📄' : '🖼️';
-                @endphp
-                <div class="do-doc-row">
-                    <span class="doc-icon">{{ $doIcon }}</span>
-                    <span class="doc-name">DO Document — {{ $do->DO_Number }}</span>
-                    <div class="doc-actions">
-                        <button class="btn btn-secondary btn-sm"
-                            onclick="viewDocument('{{ $doUrl }}', 'DO Document — {{ $do->DO_Number }}', '{{ $doExt }}')">
-                            👁 View
-                        </button>
-                        <a class="btn btn-primary btn-sm" href="{{ $doUrl }}" download target="_blank">
-                            ⬇ Download
-                        </a>
-                    </div>
-                </div>
+@if($do->DO_Link)
+    <div style="margin-top: 14px;">
+        <h4 style="margin-bottom: 8px;">📄 DO Document</h4>
+        @php
+            // Points to your exact route name 'delivery.file' using the 'id' and 'type' parameters
+            $doUrl = route('delivery.file', ['id' => $do->DO_ID, 'type' => 'do']);
+            
+            // Check if the binary content begins with the PDF magic signature
+            $isPdf = str_starts_with($do->DO_Link, '%PDF');
+            $doExt = $isPdf ? 'pdf' : 'png';
+            $doIcon = $isPdf ? '📄' : '🖼️';
+        @endphp
+        <div class="do-doc-row">
+            <span class="doc-icon">{{ $doIcon }}</span>
+            <span class="doc-name">DO Document — {{ $do->DO_Number }}</span>
+            <div class="doc-actions">
+                <button class="btn btn-secondary btn-sm"
+                    onclick="viewDocument('{{ $doUrl }}', 'DO Document — {{ $do->DO_Number }}', '{{ $doExt }}')">
+                    👁 View
+                </button>
+                <a class="btn btn-primary btn-sm" href="{{ $doUrl }}" download="DO_{{ $do->DO_Number }}.{{ $doExt }}">
+                    ⬇ Download
+                </a>
             </div>
-        @endif
+        </div>
+    </div>
+@endif
     </div>
 
     <hr class="section-divider">
@@ -413,7 +417,7 @@
                 </label>
                 <textarea id="discount_reason" name="discount_reason" rows="3"
                     placeholder="e.g. Partial delivery on PO-2026-045, agreed deduction per signed credit note CN-012…"></textarea>
-                <span class="input-hint">Recorded in the audit log.</span>
+                
             </div>
 
             {{-- ============================================================
@@ -871,19 +875,21 @@
     }
 
     // ─── Audit Trail Logger Request ──────────────────────────────────────────
-    function logAudit(action, description) {
-        const token = document.querySelector('meta[name="csrf-token"]');
-        if (!token) return;
-        fetch('/audit/log', {
-            method: 'POST',
-            headers: { 
-                'Content-Type':'application/json', 
-                'X-CSRF-TOKEN':token.content, 
-                'X-Requested-With':'XMLHttpRequest' 
-            },
-            body: JSON.stringify({ action, description, module: 'Invoice' })
-        }).catch(() => {});
-    }
+   function logAudit(action, description) {
+    const token = document.querySelector('meta[name="csrf-token"]');
+    if (!token) return;
+    fetch('/audit/log', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': token.content,
+            'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: JSON.stringify({ action, description, module: 'Invoice' })
+    })
+    .then(r => { if (!r.ok) console.error('Audit log failed:', r.status); })
+    .catch(err => console.error('Audit log error:', err));
+}
 
     // Utility text validation escaping method
     function escapeHtml(string) {
